@@ -1,7 +1,9 @@
 <template>
-  <div id="app">
-    <div id="posts">s
-      <fbl-post v-for="(post, index) of posts" v-bind:key="index" v-bind="post"/>
+  <div id="app" class="container">
+    <div class="row">
+      <div id="posts" class="offset-3 col-6 offset-3">
+        <fbl-post v-for="(post, index) of posts" v-bind:key="index" v-bind="post"/>
+      </div>
     </div>
   </div>
 </template>
@@ -26,8 +28,6 @@ export default Vue.extend({
 });
 </script>
 
-<style>
-#posts {
-  text-align: center
-}
+<style lang="scss">
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
 </style>

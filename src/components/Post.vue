@@ -1,12 +1,12 @@
 <template>
-  <div id="post">
-    <div id="header">
+  <div id="post" class="row">
+    <div id="header" class="col-6 align-left">
       {{author}}
     </div>
-    <div id="description">
+    <div id="description" class="col-12">
       {{description}}
     </div>
-    <div id="content">
+    <div id="content" class="col-12">
       no content yet
     </div>
   </div>
@@ -15,7 +15,7 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  name: 'Post',
+  name: 'fbl-post',
   props: {
     author: {type: String, default: 'default author'},
     description: {type: String, default: 'default content'},
@@ -23,6 +23,5 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="postcss" scoped>
-
+<style lang="scss" scoped>
 </style>
