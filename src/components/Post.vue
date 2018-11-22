@@ -13,7 +13,7 @@
     <div id="actions" class="col-12">
       <div class="row">
         <div class="col-4">
-          <fbl-reaction v-bind:icon="'thumbs-up'" v-bind:label="'like it'"/>
+          <fbl-like/>
         </div>
         <div class="col-4">
           <fbl-reaction v-bind:icon="'comment'" v-bind:label="'comment'"/>
@@ -29,6 +29,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ReactionVue from './Reaction.vue';
+import LikeVue from './Like.vue';
 export default Vue.extend({
   name: 'fbl-post',
   props: {
@@ -36,7 +37,8 @@ export default Vue.extend({
     description: {type: String, default: 'default content'},
   },
   components: {
-    'fbl-reaction': ReactionVue
+    'fbl-reaction': ReactionVue,
+    'fbl-like': LikeVue
   }
 })
 </script>

@@ -1,10 +1,10 @@
 <template>
-  <div v-bind:class="this.hovered ? 'background' : ''">
-    <table align="center" v-on:mouseenter="mouse_enter" v-on:mouseleave="mouse_leave">
+  <div v-bind:class="this.hovered ? 'background' : ''" v-on:mouseenter="mouse_enter" v-on:mouseleave="mouse_leave">
+    <table align="center">
       <tbody>
         <tr class="w-100">
           <td v-bind:class="faIcon"></td>
-          <td class="label text-capitalize">{{label}}</td>
+          <td class="label text-capitalize" v-bind:class="styleClass">{{label}}</td>
         </tr>
       </tbody>
     </table>
@@ -18,6 +18,7 @@ export default Vue.extend({
   props: {
     icon: {type: String, default: 'question'},
     label: {type: String, default: 'action'},
+    styleClass: {type: String}
   },
   data: function() {
     return {
@@ -43,7 +44,7 @@ export default Vue.extend({
   background: lightgrey;
 }
 .label {
-  padding-left: 10%
+  padding-left: 10px
 }
 </style>
 
