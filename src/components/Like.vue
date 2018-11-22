@@ -4,20 +4,20 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ReactionVue from './Reaction.vue';
+import ReactionVue from './Reaction.vue'
 export default Vue.extend({
   name: 'fbl-like',
   components: {
     'fbl-reaction': ReactionVue
   },
-  data: function() {
+  data: function () {
     return {
       liked: false
     }
   },
   methods: {
-    on_click: function() {
-      this.liked = !this.liked;
+    on_click: function () {
+      this.liked = !this.liked
     }
   },
   computed: {
@@ -33,6 +33,3 @@ export default Vue.extend({
   font-weight: bold
 }
 </style>
-
-
-

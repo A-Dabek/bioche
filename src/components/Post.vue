@@ -1,13 +1,12 @@
 <template>
-  <div id="post" class="row">
+  <div class="row post">
     <div id="header" class="col-6 align-left">
-      {{author}}
     </div>
     <div id="description" class="col-12">
-      {{description}}
+      {{props.title}}
     </div>
     <div id="content" class="col-12">
-      no content yet
+      <img v-bind:src="props.url"/>
     </div>
     <hr>
     <div id="actions" class="col-12">
@@ -28,13 +27,15 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ReactionVue from './Reaction.vue';
-import LikeVue from './Like.vue';
+import ReactionVue from './Reaction.vue'
+import LikeVue from './Like.vue'
+import Axios from 'axios'
+import { Post } from '../interface/post'
+
 export default Vue.extend({
   name: 'fbl-post',
   props: {
-    author: {type: String, default: 'default author'},
-    description: {type: String, default: 'default content'},
+    props: { type: Object as () => Post }
   },
   components: {
     'fbl-reaction': ReactionVue,
@@ -44,7 +45,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-#post {
+.post {
   border: solid 1px lightgray;
   border-radius: 2%;
 }
@@ -55,5 +56,8 @@ hr {
 }
 #actions {
   margin-bottom: 2%;
+}
+#content img {
+  width: inherit;
 }
 </style>

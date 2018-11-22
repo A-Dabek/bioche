@@ -16,22 +16,22 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'fbl-reaction',
   props: {
-    icon: {type: String, default: 'question'},
-    label: {type: String, default: 'action'},
-    styleClass: {type: String}
+    icon: { type: String, default: 'question' },
+    label: { type: String, default: 'action' },
+    styleClass: { type: String }
   },
-  data: function() {
+  data: function () {
     return {
       faIcon: `fa fa-${this.icon}`,
       hovered: false
     }
   },
   methods: {
-    mouse_enter: function() {
-      this.hovered = true;
+    mouse_enter: function () {
+      this.hovered = true
     },
-    mouse_leave: function() {
-      this.hovered = false;
+    mouse_leave: function () {
+      this.hovered = false
     }
   },
   computed: {
@@ -47,4 +47,3 @@ export default Vue.extend({
   padding-left: 10px
 }
 </style>
-
