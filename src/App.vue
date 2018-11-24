@@ -13,6 +13,7 @@ import Vue from 'vue'
 import PostVue from './components/Post.vue'
 import Axios from 'axios'
 import { Post } from './interface/post'
+import { RandomUtils } from './utils/random'
 
 export default Vue.extend({
   name: 'app',
@@ -28,7 +29,9 @@ export default Vue.extend({
     Axios
       .get<Post[]>('https://jsonplaceholder.typicode.com/photos')
       .then(response => {
-        this.posts = response.data.filter((i: Post) => i.id < 20)
+        this.posts = response.data
+          .filter(i => i.id < 20)
+          .map(i => ({ ...i, timestamp: RandomUtils.randomDate() }))
       })
   }
 })

@@ -13,6 +13,7 @@ module.exports = {
     // 'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // 'block-spacing': 'off',
     // 'space-before-function-paren': 'off'
+    'no-inner-declarations': 'off'
   },
   parserOptions: {
     parser: 'typescript-eslint-parser'
