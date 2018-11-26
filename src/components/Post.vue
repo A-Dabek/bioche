@@ -35,6 +35,20 @@
         </div>
       </div>
     </div>
+    <div id="comments" class="col-12">
+      <div class="comment-container" v-for="(comment, index) in comments" v-bind:key="index">
+        <div class="comment-avatar">
+          <img v-bind:src="props.thumbnailUrl">
+        </div>
+        <div>
+          <div class="comment">
+            {{comment.content}}
+          </div>
+          <label class="reaction reaction-like">Like it</label>
+          <label class="reaction reaction-comment">Comment</label>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,15 +58,29 @@ import ReactionVue from './Reaction.vue'
 import LikeVue from './Like.vue'
 import Axios from 'axios'
 import { Post } from '../interface/post'
+import { RandomUtils } from '@/utils/random';
+import { FblComment } from '@/interface/fbl-comment';
 
 export default Vue.extend({
   name: 'fbl-post',
   props: {
-    props: { type: Object as () => Post }
+    props: { type: Object as () => Post },
+    comments: { type: Array as () => Array<FblComment>, default: function() {
+      return <FblComment[]>[
+        {author: '', content: 'as alkjsdlka slk jhlkjljfd; lkhaklkwjpo  s afjduoiosafkj shrd dhsakdhak hdsja hkjsadh kdjlashkdj ajkdhas d', timestamp: RandomUtils.randomDate()},
+        {author: '', content: 'asfhdssdhjf sldhfhjklshdjfh sjklhf sldhfshd fjfgh', timestamp: RandomUtils.randomDate()},
+        {author: '', content: 'sdlkfsd kjsdfh jkdshfkljs hfksdhkfls', timestamp: RandomUtils.randomDate()},
+      ]}
+    }
   },
   components: {
     'fbl-reaction': ReactionVue,
     'fbl-like': LikeVue
+  },
+  computed: {
+    showComments: function(): boolean {
+      return this.comments.length > 0
+    }
   }
 })
 </script>
@@ -76,6 +104,8 @@ export default Vue.extend({
       padding-left: 10px;
     }
     .author-name {
+      font-weight: bold;
+      color: mediumblue;
       margin: 0;
       font-size: 1.1em;
     }
@@ -95,6 +125,34 @@ export default Vue.extend({
   }
   #actions {
     margin-bottom: 2%;
+  }
+  #comments {
+    .comment-container {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .comment-avatar {
+      img {
+        width: 40px
+      }
+    }
+    .comment {
+      margin-left: 10px;
+      background: lightgray;
+      border-radius: 20px;
+      padding: 10px;
+    }
+    .reaction {
+      font-size: 0.9em;
+      color: mediumblue;
+      font-weight: bold;
+    }
+    .reaction-like {
+      margin-left: 25px;
+    }
+    .reaction-comment {
+      margin-left: 10px;
+    }
   }
 }
 </style>
