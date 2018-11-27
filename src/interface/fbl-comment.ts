@@ -1,5 +1,7 @@
 export interface FblComment {
-  author: string;
-  content: string;
+  email: string;
+  body: string;
   timestamp: Date;
+  thumbnailUrl: string;
+  id: number;
 }
