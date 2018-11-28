@@ -1,5 +1,17 @@
 <template>
   <div class="row">
+    <div class="col-12 mb-3">
+      <div class="comment-container">
+        <div class="comment-avatar">
+          <img v-bind:src="'https://via.placeholder.com/150/323599'">
+        </div>
+        <div class="w-100">
+          <div class="comment comment-user">
+            <input class="comment-input" placeholder="Write a comment" v-on:keyup.enter="addComment"/>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="col-12">
       <div class="comment-container" v-for="(comment, index) in comments" v-bind:key="index">
         <div class="comment-avatar">
@@ -47,6 +59,10 @@ export default Vue.extend({
       this.comments.forEach(comment => this.commentService.getCommentsAuthorPhotoForPost(comment.id).then(url => {
         this.comments = this.comments.map(i => i.id === comment.id ? {...comment, thumbnailUrl: url} : i);
       }));
+    },
+    addComment: function(event: {target: HTMLInputElement}) {
+      this.commentService.addComment(this.postId, event.target.value).then(comment => this.comments.push(comment));
+      event.target.value = '';
     }
   }
 })
@@ -85,6 +101,17 @@ export default Vue.extend({
   margin: 0;
   font-weight: bold;
   color: mediumblue;
+}
+.comment-user {
+  padding: 10px;
+  border: 1px solid gray;
+}
+.comment-input {
+  background: lightgray;
+  border: none;
+  &:focus {
+    outline: none;
+  }
 }
 </style>
 

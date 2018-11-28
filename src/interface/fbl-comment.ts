@@ -4,4 +4,5 @@ export interface FblComment {
   timestamp: Date;
   thumbnailUrl: string;
   id: number;
+  postId: number;
 }

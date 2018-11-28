@@ -7,6 +7,10 @@ export class CommentService {
     return Axios.get<FblComment[]>(`https://jsonplaceholder.typicode.com/comments?postId=${id}`).then(response => response.data);
   }
 
+  addComment(postId: number, body: string): Promise<FblComment> {
+    return Axios.post(`https://jsonplaceholder.typicode.com/comments`, <Partial<FblComment>>{body: body, postId: postId}).then(response => response.data);
+  }
+
   getCommentsAuthorPhotoForPost(id: number): Promise<string> {
     return Axios.get<FblPhoto[]>(`https://jsonplaceholder.typicode.com/photos?id=${id}`).then(response => response.data[0].thumbnailUrl);
   }
