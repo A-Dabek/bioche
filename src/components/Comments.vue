@@ -59,10 +59,16 @@ export default Vue.extend({
       this.comments.forEach(comment => this.commentService.getCommentsAuthorPhotoForPost(comment.id).then(url => {
         this.comments = this.comments.map(i => i.id === comment.id ? {...comment, thumbnailUrl: url} : i);
       }));
+      console.log(this.userName);
     },
     addComment: function(event: {target: HTMLInputElement}) {
       this.commentService.addComment(this.postId, event.target.value).then(comment => this.comments.push(comment));
       event.target.value = '';
+    }
+  },
+  computed: {
+    userName(): string {
+      return this.$store.state;
     }
   }
 })

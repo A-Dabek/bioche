@@ -14,12 +14,14 @@ import PostVue from './components/Post.vue'
 import Axios from 'axios'
 import { Post } from './interface/post'
 import { RandomUtils } from './utils/random'
+import { FblStore } from './vuex/store'
 
 export default Vue.extend({
   name: 'app',
   components: {
     'fbl-post': PostVue
   },
+  store: FblStore,
   data: () => {
     return {
       posts: [] as Post[]
