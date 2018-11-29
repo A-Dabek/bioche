@@ -1,5 +1,7 @@
 import { FblUser } from '@/interface/fbl-user';
+import { FblComment } from '@/interface/fbl-comment';
 
 export interface FblState {
-  user: FblUser
+  user: FblUser,
+  comments: FblComment[]
 }

@@ -3,7 +3,7 @@
     <div class="col-12 mb-3">
       <div class="comment-container">
         <div class="comment-avatar">
-          <img v-bind:src="'https://via.placeholder.com/150/323599'">
+          <img v-bind:src="avatarUrl">
         </div>
         <div class="w-100">
           <div class="comment comment-user">
@@ -32,7 +32,6 @@
 
 <script lang="ts">
 import { CommentService } from '@/service/comment.service';
-
 import Vue from 'vue'
 import { FblComment } from '@/interface/fbl-comment';
 export default Vue.extend({
@@ -42,40 +41,39 @@ export default Vue.extend({
   },
   data: function() {
     return {
-      comments: <FblComment[]>[],
       commentService: new CommentService(),
-      photosPerComment: <string[]>[]
+      photosPerComment: [] as string[]
     }
   },
   mounted: function() {
-    this.commentService.getCommentsForPost(this.postId).then(comments => {
-      this.comments = comments;
-      this.photosPerComment = Array(this.comments.length).fill('');
-      this.loadPhotos();
-    });
+    this.$store.dispatch('getComments', this.postId);
+    // this.commentService.getCommentsForPost(this.postId).then(comments => {
+    //   this.comments = comments;
+    //   this.photosPerComment = Array(this.comments.length).fill('');
+    //   this.loadPhotos();
+    // });
   },
   methods: {
-    loadPhotos: function() {
-      this.comments.forEach(comment => this.commentService.getCommentsAuthorPhotoForPost(comment.id).then(url => {
-        this.comments = this.comments.map(i => i.id === comment.id ? {...comment, thumbnailUrl: url} : i);
-      }));
-      console.log(this.userName);
-    },
     addComment: function(event: {target: HTMLInputElement}) {
-      this.commentService.addComment(this.postId, event.target.value).then(comment => this.comments.push(comment));
+      this.$store.dispatch('addComment', {postId: this.postId, body: event.target.value});
       event.target.value = '';
     }
   },
   computed: {
+    comments(): FblComment[] {
+      return this.$store.state.comments;
+    },
     userName(): string {
-      return this.$store.state;
+      return this.$store.state.user.name;
+    },
+    avatarUrl(): NodeRequire {
+      return require(`@/assets/${this.$store.state.user.thumbnailUrl}`);
     }
   }
 })
 </script>
 
-
-<style lang="scss">
+<style lang="scss" scoped>
 .comment-container {
   display: flex;
   margin-bottom: 10px;
@@ -83,7 +81,7 @@ export default Vue.extend({
 .comment-avatar {
   img {
     border-radius: 50%;
-    width: 40px
+    width: 40px;
   }
 }
 .comment {
@@ -120,4 +118,3 @@ export default Vue.extend({
   }
 }
 </style>
-
