@@ -1,22 +1,19 @@
 <template>
   <div class="state" v-on:dragover="allow_drop" v-on:drop="on_drop">
-    <icon v-for="(i, index) of icons" v-bind:key="index" v-bind:path="i.path"/>
+    <icon v-for="(i, index) of state" v-bind:key="index" v-bind:name="i"/>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import IconVue from '@/components/Icon.vue';
-import { Playable } from '@/interface/playable';
 export default Vue.extend({
   name: 'state',
   components: {
     'icon': IconVue
   },
-  computed: {
-    icons: function() {
-      return this.$store.state.playerState
-    }
+  props: {
+    state: {type: Array}
   },
   methods: {
     allow_drop: function (event: any) {
@@ -24,8 +21,7 @@ export default Vue.extend({
     },
     on_drop: function(event: any) {
       event.preventDefault();
-      const playable = event.dataTransfer.getData('playable');
-      this.$store.commit('addToState', JSON.parse(playable));
+      this.$store.dispatch('playIcon', event.dataTransfer.getData('playable'));
     }
   }
 })
@@ -33,7 +29,8 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .state {
-  height: 200px;
+  min-height: 200px;
   border: 1px solid black;
+  padding: 10px;
 }
 </style>

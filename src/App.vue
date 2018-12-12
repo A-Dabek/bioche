@@ -1,21 +1,14 @@
 <template>
   <div id="app" class="container">
-    <div class="row enemy-state">
+    <div class="row">
       <div class="col-12">
-        <state/>
+        <login/>
       </div>
-    </div>
-    <div class="row player-hand">
-      <div class="col-12">
-        <hand/>
+      <div class="col-12" v-if="showEnemyList">
+        <enemy-list/>
       </div>
-    </div>
-    <div class="row player-state">
-      <div class="col-11">
-        <state/>
-      </div>
-      <div class="col-1">
-        <end-turn/>
+      <div class="col-12" v-if="showGame">
+        <game/>
       </div>
     </div>
   </div>
@@ -25,8 +18,7 @@
 import Vue from 'vue'
 import PostVue from './components/Post.vue'
 import Axios from 'axios'
-import { Post } from './interface/post'
-import { FblStore } from './vuex/store'
+import { AppStoreObject } from './vuex/store'
 import IconVue from '@/components/Icon.vue';
 import EndTurnVue from '@/components/EndTurn.vue';
 import StateVue from '@/components/State.vue';
@@ -36,46 +28,27 @@ import { HarmfulPlayable } from '@/core/harmful.playable';
 import { ProtectivePlayable } from '@/core/protective.playable';
 import { Playable } from '@/core/playable';
 import { ReactivePlayable } from '@/core/reactive-playable';
-
-let hand = [] as ReactivePlayable[];
-let library: {[k: string]: () => ReactivePlayable} = {
-  'c1': () => new CollectablePlayable('c1'),
-  'c2': () => new CollectablePlayable('c2'),
-  'c3': () => new CollectableFirstPlayable('c3'),
-  'n1': () => new HarmfulPlayable('n1'),
-  'p1': () => new ProtectivePlayable('p1')
-};
-
-function getPlayable(name: string): Playable {
-  return library[name]();
-}
-
-function play(p: string) {
-  const played = getPlayable(p);
-  hand = eventHandler(played as any, hand) as any;
-}
-
-function eventHandler(played: ReactivePlayable, hand: ReactivePlayable[]): Playable[] {
-  let events = played.dispatch();
-  let new_hand = [...hand];
-  hand.forEach(h => events = h.react(events));
-  events.forEach(ev => new_hand = ev.process(played, new_hand) as any);
-  return new_hand;
-}
-
-['c1', 'c2', 'c3', 'n1', 'p1', 'n1'].forEach(i => play(i))
+import LoginVue from '@/components/Login.vue';
+import EnemyListVue from '@/components/EnemyList.vue';
+import GameVue from '@/components/Game.vue';
 
 export default Vue.extend({
   name: 'app',
   components: {
-    'fbl-icon': IconVue,
-    'end-turn': EndTurnVue,
-    'state': StateVue,
-    'hand': HandVue
+    'login': LoginVue,
+    'enemy-list': EnemyListVue,
+    'game': GameVue
   },
-  store: FblStore,
-  data: () => {
-    return {
+  store: AppStoreObject,
+  mounted: function() {
+    this.$store.dispatch('listenToUsersList')
+  },
+  computed: {
+    showEnemyList: function() {
+      return !!this.$store.state.user.name && !this.$store.state.user.playing
+    },
+    showGame: function() {
+      return !!this.$store.state.user.playing
     }
   }
 })

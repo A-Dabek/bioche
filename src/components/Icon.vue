@@ -11,11 +11,22 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { IconLibrary } from '@/icons/icon-library';
 export default Vue.extend({
   name: 'icon',
-  props: {
-    path: {type: String, default: ''}
+  data: function() {
+    return {
+      library: new IconLibrary()
+    }
   },
+  props: {
+    name: {type: String, default: ''}
+  },
+  computed: {
+    path: function() {
+      return (this.library as any)[this.name]
+    }
+  }
 })
 </script>
 
