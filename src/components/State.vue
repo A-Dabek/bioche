@@ -21,7 +21,7 @@ export default Vue.extend({
     },
     on_drop: function(event: any) {
       event.preventDefault();
-      this.$store.dispatch('playIcon', event.dataTransfer.getData('playable'));
+      this.$emit('play', event.dataTransfer.getData('playable'));
     }
   }
 })

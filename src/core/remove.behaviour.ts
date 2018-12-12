@@ -3,7 +3,6 @@ import { Playable } from './playable';
 import { Target } from './target';
 
 export class RemoveBehaviour implements Behaviour {
-
   private targets: Target[];
 
   process(played: Playable, playables: Playable[]): Playable[] {

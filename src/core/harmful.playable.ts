@@ -10,7 +10,7 @@ export class HarmfulPlayable implements ReactivePlayable {
   tribe: HarmfulTribe;
 
   dispatch(): Behaviour[] {
-    return [new RemoveBehaviour(new TargetTribe(new CollectableTribe()),new TargetFirst())]
+    return [new RemoveBehaviour(new TargetTribe(new CollectableTribe()), new TargetFirst())]
   }
 
   react(events: Behaviour[]): Behaviour[] {

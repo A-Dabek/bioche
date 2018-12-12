@@ -3,7 +3,6 @@ import { Playable } from './playable';
 import { Tribe } from './tribe';
 
 export class TargetName implements Target {
-  
   pointTargets(playables: Playable[]): Playable[] {
     return playables.filter(i => i.name === this.name)
   }
@@ -12,7 +11,6 @@ export class TargetName implements Target {
 }
 
 export class TargetRef implements Target {
-  
   pointTargets(playables: Playable[]): Playable[] {
     return playables.filter(i => i === this.ref)
   }
@@ -21,7 +19,6 @@ export class TargetRef implements Target {
 }
 
 export class TargetTribe implements Target {
-  
   pointTargets(playables: Playable[]): Playable[] {
     return playables.filter(i => i.tribe.constructor === this.tribe.constructor)
   }

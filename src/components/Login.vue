@@ -31,7 +31,7 @@ export default Vue.extend({
   },
   computed: {
     loggedIn: function() {
-      if (!!this.$store.state.user.name) {
+      if (this.$store.state.user.name) {
         this.input_value = `Zalogowano jako ${this.$store.state.user.name}`
       }
       return !!this.$store.state.user.name

@@ -34,18 +34,17 @@ export class TargetAll implements Target {
 }
 
 export class TargetRandom implements Target {
-
   private shuffle(array: any[]) {
     let j, x, i;
     array = [...array];
     for (i = array.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = array[i];
-        array[i] = array[j];
-        array[j] = x;
+      j = Math.floor(Math.random() * (i + 1));
+      x = array[i];
+      array[i] = array[j];
+      array[j] = x;
     }
     return array;
-}
+  }
 
   pointTargets(playables: Playable[]): Playable[] {
     let _temp = this.shuffle(playables).slice(0, this.repeats);
