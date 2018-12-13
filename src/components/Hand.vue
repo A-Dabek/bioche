@@ -14,8 +14,8 @@ export default Vue.extend({
     'icon': PlayableVue
   },
   computed: {
-    hand: function() {
-      return this.$store.state.user.hand
+    hand: function(): string[] {
+      return this.$store.getters.user.hand;
     }
   }
 })

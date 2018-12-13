@@ -1,13 +1,21 @@
 <template>
 <div class="row">
-  <div class="col-12 text-center">
+  <div class="col-6">
     <h1>Wybierz przeciwnika</h1>
     <div class="enemy-name" 
-    v-for="(enemy) in enemies" 
+    v-for="(enemy) in toBeChallenged" 
     v-bind:key="enemy.name"
-    v-bind:class="hover === enemy.name ? 'hovered' : ''"
-    v-on:click="choose_enemy(enemy.name)"
-    v-on:mouseenter="hover = enemy.name">
+    v-on:click="choose_enemy(enemy.name)">
+      {{enemy.name}}
+      <icon v-if="challengedByMe === enemy.name" v-bind:name="'swords_power'"/>
+    </div>
+  </div>
+  <div class="col-6">
+    <h1>Chcą grać z Tobą</h1>
+    <div class="enemy-name" 
+    v-for="(enemy) in challengingMe" 
+    v-bind:key="enemy.name"
+    v-on:click="choose_enemy(enemy.name)">
       {{enemy.name}}
     </div>
   </div>
@@ -16,21 +24,32 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { UsersStoreChallengeAction } from '@/vuex/users.store-module';
+import IconVue from '@/components/Icon.vue';
+import { functions } from 'firebase';
 export default Vue.extend({
   name: 'enemy-list',
+  components: {
+    'icon': IconVue
+  },
   data: function() {
     return {
-      hover: ''
     }
   },
   computed: {
-    enemies: function () {
-      return this.$store.getters.possibleEnemies;
+    challengedByMe: function() {
+      return this.$store.getters.user.challenging;
     },
+    toBeChallenged: function () {
+      return this.$store.getters.availableUsers;
+    },
+    challengingMe: function() {
+      return this.$store.getters.challengingMeUsers;
+    }
   },
   methods: {
     choose_enemy: function(userName: string) {
-      this.$store.dispatch('chooseEnemy', userName)
+      this.$store.dispatch(new UsersStoreChallengeAction(userName))
     }
   }
 })
@@ -42,8 +61,5 @@ export default Vue.extend({
   margin-top: 20px;
   font-size: 2.0em;
   font-weight: bold;
-}
-.hovered {
-  background: gray;
 }
 </style>

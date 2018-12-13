@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { UsersStoreSignInAction } from '@/vuex/users.store-module';
 export default Vue.extend({
   name: 'login',
   data: function() {
@@ -26,15 +27,15 @@ export default Vue.extend({
   },
   methods: {
     log_in_user: function() {
-      this.$store.dispatch('addUserToFirebase', this.input_value);
+      this.$store.dispatch(new UsersStoreSignInAction(this.input_value));
     }
   },
   computed: {
     loggedIn: function() {
-      if (this.$store.state.user.name) {
-        this.input_value = `Zalogowano jako ${this.$store.state.user.name}`
+      if (this.$store.state.users.currentUser) {
+        this.input_value = `Zalogowano jako ${this.$store.state.users.currentUser}`
       }
-      return !!this.$store.state.user.name
+      return !!this.$store.state.users.currentUser
     }
   }
 })
