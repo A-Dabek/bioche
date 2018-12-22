@@ -2,10 +2,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 export class FirestoreService {
-
   private static instance: FirestoreService;
-
-  private db: firebase.firestore.Firestore;
 
   static getInstance(): FirestoreService {
     if (!FirestoreService.instance) {
@@ -21,6 +18,8 @@ export class FirestoreService {
     }
     return FirestoreService.instance;
   }
+
+  private db: firebase.firestore.Firestore;
 
   getDB() {
     return this.db;

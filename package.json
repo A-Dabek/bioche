@@ -17,9 +17,14 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@firebase/app-types": "^0.3.2",
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-typescript": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/eslint-config-typescript": "^3.2.0",
+    "eslint": "^5.10.0",
+    "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "typescript": "^3.0.0",

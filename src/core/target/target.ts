@@ -1,4 +1,4 @@
-import { Playable } from './playable';
+import { Playable } from '../playable';
 
 export interface Target {
   pointTargets(playables: Playable[]): Playable[]

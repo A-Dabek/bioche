@@ -5,20 +5,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import PlayableVue from '@/components/Playable.vue';
-import { Playable } from '@/core/playable';
+import Vue from "vue";
+import PlayableVue from "@/components/Playable.vue";
+import { Playable } from "@/core/playable";
 export default Vue.extend({
-  name: 'hand',
+  name: "hand",
   components: {
-    'icon': PlayableVue
+    icon: PlayableVue
   },
   computed: {
     hand: function(): string[] {
-      return this.$store.getters.user.hand;
+      return [
+        "bowels",
+        "brain",
+        "liver",
+        "kidneys",
+        "lungs",
+        "heart",
+        "stomach"
+      ];
+      // return this.$store.getters.user.hand;
     }
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>

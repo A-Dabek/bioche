@@ -2,9 +2,9 @@ import { ReactivePlayable } from './reactive-playable';
 import { CollectableTribe, HarmfulTribe, ProtectiveTribe } from './tribe';
 import { Behaviour } from './behaviour';
 import { CollectBehaviour } from './collect.behaviour';
-import { TargetLast, TargetFirst } from './placement.target';
 import { RemoveBehaviour } from './remove.behaviour';
-import { TargetTribe, TargetRef } from './name.target';
+import { TargetFirst } from './target/target-first';
+import { TargetRef } from './target/target-ref';
 
 export class ProtectivePlayable implements ReactivePlayable {
   tribe: ProtectiveTribe;

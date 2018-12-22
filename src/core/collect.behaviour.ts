@@ -1,5 +1,5 @@
 import { Behaviour } from './behaviour';
-import { Target } from './target';
+import { Target } from './target/target';
 import { Playable, NullPlayable } from './playable';
 
 export class CollectBehaviour implements Behaviour {

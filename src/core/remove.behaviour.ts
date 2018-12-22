@@ -1,6 +1,6 @@
 import { Behaviour } from './behaviour';
 import { Playable } from './playable';
-import { Target } from './target';
+import { Target } from './target/target';
 
 export class RemoveBehaviour implements Behaviour {
   private targets: Target[];

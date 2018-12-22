@@ -45,7 +45,6 @@ export const IconLibraryStore: StoreOptions<IconLibraryState> = {
           context.commit('initLibrary', library);
         })
         .catch(() => context.commit('initLibrary', {}));
-        return;
     },
   }
 }

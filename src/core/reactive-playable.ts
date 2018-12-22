@@ -1,5 +1,3 @@
-
-import { Tribe } from './tribe';
 import { Playable } from './playable';
 import { Behaviour } from './behaviour';
 

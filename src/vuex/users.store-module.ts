@@ -105,9 +105,9 @@ export const UsersStore: StoreOptions<UsersState> = {
     startGame: function(context, action: UsersStoreChallengeAction) {
       db.collection('users')
         .doc(context.state.currentUser)
-        .update({hand: ['bowels', 'wine_bottle', 'american_football_helmet'] as string[], state: ['bowels'] as string[]} as User);
+        .update({hand: [] as string[], state: ['bowels'] as string[]} as User);
     },
-    play:  function(context, action: UsersStorePlayAction) {
+    play: function(context, action: UsersStorePlayAction) {
       const userTarget = context.state.users.find(i => i.name === action.target);
       if (!userTarget) return;
       const tempHand = GameService.getInstance().play(action.played, userTarget.state);
