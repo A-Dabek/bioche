@@ -5,31 +5,31 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import IconVue from '@/components/Icon.vue';
+import Vue from "vue";
+import IconVue from "@/components/Icon.vue";
 export default Vue.extend({
-  name: 'state',
+  name: "state",
   components: {
-    'icon': IconVue
+    icon: IconVue
   },
   props: {
-    state: {type: Array}
+    state: { type: Array, default: () => [] }
   },
   methods: {
-    allow_drop: function (event: any) {
+    allow_drop: function(event: any) {
       event.preventDefault();
     },
     on_drop: function(event: any) {
       event.preventDefault();
-      this.$emit('play', event.dataTransfer.getData('playable'));
+      this.$emit("play", event.dataTransfer.getData("playable"));
     }
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>
 .state {
-  min-height: 200px;
+  // min-height: 200px;
   border: 1px solid black;
   padding: 10px;
 }

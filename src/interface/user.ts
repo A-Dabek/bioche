@@ -5,4 +5,5 @@ export interface User {
   hand: string[];
   state: string[];
   challenging: string;
+  winner: boolean;
 }

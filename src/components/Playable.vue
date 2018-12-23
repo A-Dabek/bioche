@@ -1,29 +1,28 @@
 <template>
-  <div class="playable d-inline" draggable v-on:dragstart="on_drag" >
+  <div class="playable d-inline" draggable v-on:dragstart="on_drag">
     <icon v-bind:name="name"/>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import IconVue from '@/components/Icon.vue';
-import { Playable } from '@/core/playable';
+import Vue from "vue";
+import IconVue from "@/components/Icon.vue";
+import { Playable } from "@/core/playable";
 export default Vue.extend({
-  name: 'playable',
+  name: "playable",
   components: {
-    'icon': IconVue
+    icon: IconVue
   },
   props: {
-    name: {type: String, default: ''}
+    name: { type: String, default: "" }
   },
   methods: {
     on_drag: function(event: any) {
-      event.dataTransfer.setData('playable', this.name);
+      this.$emit("drag", event);
     }
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>
-
 </style>

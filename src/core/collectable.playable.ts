@@ -1,8 +1,8 @@
-import { ReactivePlayable } from "./reactive-playable";
-import { Behaviour } from "./behaviour";
-import { CollectBehaviour } from "./collect.behaviour";
-import { TargetLast } from "./target/target-last";
-import { TargetFirst } from "./target/target-first";
+import { ReactivePlayable } from './reactive-playable';
+import { Behaviour } from './behaviour';
+import { CollectBehaviour } from './collect.behaviour';
+import { TargetLast } from './target/target-last';
+import { TargetFirst } from './target/target-first';
 import { Tribe } from './tribe';
 
 export class CollectablePlayable implements ReactivePlayable {
