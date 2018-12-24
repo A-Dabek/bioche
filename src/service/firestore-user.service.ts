@@ -9,14 +9,14 @@ export class FirestoreUserService {
     });
   }
 
-  setUser(user: Partial<User>): Promise<void> {
+  setUser(user: Partial<User> & { name: string }): Promise<void> {
     return this.db
       .collection('users')
       .doc(user.name)
       .set(user);
   }
 
-  updateUser(user: Partial<User>): Promise<void> {
+  updateUser(user: Partial<User> & { name: string }): Promise<void> {
     return this.db
       .collection('users')
       .doc(user.name)

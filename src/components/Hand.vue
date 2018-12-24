@@ -4,23 +4,26 @@
       <description v-bind:icon_name="descriptionOf" v-on:dismiss="hide_desc"/>
     </div>
     <div class="hand" v-else>
-      <icon
-        v-for="(i, index) of hand"
-        v-bind:key="index"
-        v-bind:name="i"
-        v-on:click.native="show_desc(i)"
-        v-on:drag="on_drag($event, index)"
-      />
+      <draggable
+        v-model="hand"
+        v-bind:options="{group: {name: 'icons', put: true, pull: true}, sort: true, ghostClass: 'ghost'}"
+      >
+        <span v-for="(i, index) of hand" v-bind:key="index">
+          <icon v-bind:name="i" v-on:click.native="show_desc(i)"/>
+        </span>
+      </draggable>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import PlayableVue from "@/components/Playable.vue";
 import { Playable } from "@/core/playable";
 import DescriptionVue from "@/components/Description.vue";
 import { functions } from "firebase";
+import draggable from "vuedraggable";
+import IconVue from "@/components/Icon.vue";
+import { UsersStorePermuteHandAction } from "@/vuex/users.store-module";
 export default Vue.extend({
   name: "hand",
   data: function() {
@@ -30,18 +33,21 @@ export default Vue.extend({
     };
   },
   components: {
-    icon: PlayableVue,
-    description: DescriptionVue
+    icon: IconVue,
+    description: DescriptionVue,
+    draggable
   },
   computed: {
-    hand: function(): string[] {
-      return this.$store.getters.user.hand;
+    hand: {
+      get(): string[] {
+        return this.$store.getters.user.hand;
+      },
+      set(v: string[]) {
+        this.$store.dispatch(new UsersStorePermuteHandAction(v));
+      }
     }
   },
   methods: {
-    on_drag: function(event: any, index: number) {
-      event.dataTransfer.setData("playable", index);
-    },
     show_desc: function(name: string) {
       this.showDesc = true;
       this.descriptionOf = name;
@@ -59,5 +65,8 @@ export default Vue.extend({
   padding: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+.ghost {
+  opacity: 0.5;
 }
 </style>

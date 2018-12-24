@@ -1,27 +1,41 @@
 <template>
-  <div class="state" v-on:dragover="allow_drop" v-on:drop="on_drop">
-    <icon v-for="(i, index) of state" v-bind:key="index" v-bind:name="i"/>
+  <div class="state">
+    <draggable
+      v-model="icons"
+      v-bind:options="{group: {name: 'icons', pull: false, put: true}}"
+      v-on:add="on_drop($event)"
+    >
+      <span v-for="(i, index) of state" v-bind:key="index">
+        <icon v-bind:name="i"/>
+      </span>
+    </draggable>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import IconVue from "@/components/Icon.vue";
+import draggable from "vuedraggable";
 export default Vue.extend({
   name: "state",
   components: {
-    icon: IconVue
+    icon: IconVue,
+    draggable
   },
   props: {
-    state: { type: Array, default: () => [] }
+    state: { type: Array as () => Array<string>, default: () => [] as string[] }
+  },
+  computed: {
+    icons: {
+      get(): string[] {
+        return this.state;
+      },
+      set(v: string[]) {}
+    }
   },
   methods: {
-    allow_drop: function(event: any) {
-      event.preventDefault();
-    },
     on_drop: function(event: any) {
-      event.preventDefault();
-      this.$emit("play", event.dataTransfer.getData("playable"));
+      this.$emit("play", event.oldIndex);
     }
   }
 });
@@ -29,7 +43,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .state {
-  // min-height: 200px;
+  min-height: 50px;
   border: 1px solid black;
   padding: 10px;
 }

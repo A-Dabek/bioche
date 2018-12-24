@@ -51,6 +51,11 @@ export class UsersStorePlayAction {
   }
 }
 
+export class UsersStorePermuteHandAction {
+  public type: string = 'permuteHand';
+  constructor(public newHand: string[]) {}
+}
+
 export const UsersStore: StoreOptions<UsersState> = {
   state: {
     users: [],
@@ -167,6 +172,12 @@ export const UsersStore: StoreOptions<UsersState> = {
             .concat(GameService.getInstance().getRandomIcon())
         });
       }
+    },
+    permuteHand: function(context, action: UsersStorePermuteHandAction) {
+      userService.updateUser({
+        name: context.getters.user.name,
+        hand: action.newHand
+      });
     }
   }
 };
