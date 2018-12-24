@@ -4,10 +4,7 @@
       <description v-bind:icon_name="descriptionOf" v-on:dismiss="hide_desc"/>
     </div>
     <div class="hand" v-else>
-      <draggable
-        v-model="hand"
-        v-bind:options="{group: {name: 'icons', put: true, pull: true}, sort: true, ghostClass: 'ghost'}"
-      >
+      <draggable v-model="hand" v-bind:options="draggableOptions">
         <span v-for="(i, index) of hand" v-bind:key="index">
           <icon v-bind:name="i" v-on:click.native="show_desc(i)"/>
         </span>
@@ -45,6 +42,15 @@ export default Vue.extend({
       set(v: string[]) {
         this.$store.dispatch(new UsersStorePermuteHandAction(v));
       }
+    },
+    draggableOptions: function() {
+      console.log(this.$store.getters.user.turn);
+      return {
+        group: { name: "icons", put: true, pull: true },
+        sort: true,
+        ghostClass: "ghost",
+        disabled: !this.$store.getters.user.turn
+      };
     }
   },
   methods: {

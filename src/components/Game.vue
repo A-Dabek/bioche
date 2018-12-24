@@ -2,13 +2,19 @@
   <div class="row">
     <div class="col-12 header-state">
       <state v-bind:state="enemy.state" v-on:play="play_on_enemy"/>
-      <h1 class="name">{{enemy.name}}</h1>
+      <div>
+        <icon v-if="!enemy.turn" v-bind:name="'hourglass'"/>
+        <label class="name">{{enemy.name}}</label>
+      </div>
     </div>
     <div class="col-12 hand">
       <hand/>
     </div>
     <div class="col-12 footer-state">
-      <h1 class="name">{{user.name}}</h1>
+      <div>
+        <icon v-if="!user.turn" v-bind:name="'hourglass'"/>
+        <label class="name">{{user.name}}</label>
+      </div>
       <state v-bind:state="user.state" v-on:play="play_on_user"/>
     </div>
   </div>
@@ -23,11 +29,13 @@ import {
   UsersStorePlayAction
 } from "@/vuex/users.store-module";
 import { User } from "@/interface/user";
+import IconVue from "@/components/Icon.vue";
 export default Vue.extend({
   name: "game",
   components: {
     hand: HandVue,
-    state: StateVue
+    state: StateVue,
+    icon: IconVue
   },
   mounted: function() {
     this.$store.dispatch(new UsersStoreStartGameAction());
@@ -69,5 +77,7 @@ export default Vue.extend({
 }
 .name {
   margin-left: 10px;
+  font-weight: bold;
+  font-size: 2em;
 }
 </style>

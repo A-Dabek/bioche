@@ -109,8 +109,35 @@ export const UsersStore: StoreOptions<UsersState> = {
         if (
           context.getters.user &&
           context.getters.enemy &&
+          !context.getters.user.turn &&
+          !context.getters.enemy.turn &&
+          context.getters.user.roll &&
+          context.getters.enemy.roll &&
+          context.getters.user.name === context.getters.enemy.challenging
+        ) {
+          console.log(context.getters.user.roll, context.getters.enemy.roll);
+          const user =
+            context.getters.user.roll > context.getters.enemy.roll
+              ? context.getters.user
+              : context.getters.enemy;
+          userService.updateUser({
+            name: user.name,
+            turn: true
+          });
+          userService.updateUser({
+            name: context.getters.user.name,
+            roll: 0
+          });
+          userService.updateUser({
+            name: context.getters.enemy.name,
+            roll: 0
+          });
+        }
+        if (
+          context.getters.user &&
+          context.getters.enemy &&
           !context.getters.user.winner &&
-          !context.getters.user.winner &&
+          !context.getters.enemy.winner &&
           context.getters.user.name === context.getters.enemy.challenging
         ) {
           context.commit(new NavigationMutationGoTo(NavigationEnum.game));
@@ -119,7 +146,7 @@ export const UsersStore: StoreOptions<UsersState> = {
     },
     signIn: function(context, action: UsersStoreSignInAction) {
       userService
-        .setUser({ name: action.name, challenging: '', winner: false })
+        .setUser({ name: action.name })
         .then(() => {
           context.commit('setCurrentUser', action.name);
           context.commit(new NavigationMutationGoTo(NavigationEnum.lobby));
@@ -137,11 +164,13 @@ export const UsersStore: StoreOptions<UsersState> = {
     startGame: function(context, action: UsersStoreChallengeAction) {
       userService.updateUser({
         name: context.state.currentUser,
+        roll: Math.random(),
+        turn: false,
         winner: false,
         hand: Array(4)
           .fill(1)
           .map(() => GameService.getInstance().getRandomIcon()) as string[],
-        state: [] as string[]
+        state: ['bowels'] as string[]
       } as User);
     },
     play: function(context, action: UsersStorePlayAction) {
@@ -167,9 +196,14 @@ export const UsersStore: StoreOptions<UsersState> = {
         });
         userService.updateUser({
           name: user.name,
+          turn: false,
           hand: user.hand
             .filter((_, index) => index !== action.playedIndex)
             .concat(GameService.getInstance().getRandomIcon())
+        });
+        userService.updateUser({
+          name: context.getters.enemy.name,
+          turn: true
         });
       }
     },
