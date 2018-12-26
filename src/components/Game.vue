@@ -1,19 +1,31 @@
 <template>
-  <div class="row">
-    <div class="col-12 header-state">
+  <div class="row game-root">
+    <div class="col-12 header-state game-content">
       <state v-bind:state="enemy.state" v-on:play="play_on_enemy"/>
-      <div>
-        <icon v-if="myTurn" v-bind:name="'hourglass'"/>
-        <label class="name">{{enemy.name}}</label>
+      <div class="row">
+        <div class="col-6">
+          <icon v-if="myTurn" v-bind:name="'hourglass'"/>
+          <label class="name">{{enemy.name}}</label>
+        </div>
+        <div class="col-6">
+          <icon v-if="!!enemy.lastPlay" v-bind:name="enemy.lastPlay"/>
+          <label class="name">ostatnio zagrane</label>
+        </div>
       </div>
     </div>
-    <div class="col-12 hand">
+    <div class="col-12 hand game-content">
       <hand/>
     </div>
     <div class="col-12 footer-state">
-      <div>
-        <icon v-if="!myTurn" v-bind:name="'hourglass'"/>
-        <label class="name">{{user.name}}</label>
+      <div class="row">
+        <div class="col-6">
+          <icon v-if="!myTurn" v-bind:name="'hourglass'"/>
+          <label class="name">{{user.name}}</label>
+        </div>
+        <div class="col-6">
+          <icon v-if="!!user.lastPlay" v-bind:name="user.lastPlay"/>
+          <label class="name">ostatnio zagrane</label>
+        </div>
       </div>
       <state v-bind:state="user.state" v-on:play="play_on_user"/>
     </div>
@@ -65,20 +77,19 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.row {
+.game-root {
   margin-top: 2.5vh;
   margin-bottom: 2.5vh;
   display: flex;
   flex-direction: column;
   min-height: 95vh;
 }
-.hand,
-.header-state {
+.game-content {
   flex: 1;
 }
 .name {
   margin-left: 10px;
   font-weight: bold;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 </style>
