@@ -30,7 +30,6 @@ import LoginVue from "@/components/Login.vue";
 import EnemyListVue from "@/components/EnemyList.vue";
 import GameVue from "@/components/Game.vue";
 import { IconLibraryInitAction } from "@/vuex/icon-library.store-module";
-import { UsersStoreFetchUsersAction } from "@/vuex/users.store-module";
 import AftermathVue from "@/components/Aftermath.vue";
 
 export default Vue.extend({
@@ -44,7 +43,6 @@ export default Vue.extend({
   store: AppStoreObject,
   mounted: function() {
     this.$store.dispatch(new IconLibraryInitAction());
-    this.$store.dispatch(new UsersStoreFetchUsersAction());
   },
   computed: {
     showLoggingScreen: function() {

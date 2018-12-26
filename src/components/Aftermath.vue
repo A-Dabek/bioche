@@ -14,7 +14,6 @@ import {
   NavigationMutationGoTo,
   NavigationEnum
 } from "@/vuex/navigation.store";
-import { UsersStoreSignInAction } from "@/vuex/users.store-module";
 export default Vue.extend({
   name: "aftermath",
   computed: {
@@ -25,9 +24,6 @@ export default Vue.extend({
   methods: {
     back_to_lobby: function() {
       this.$store.commit(new NavigationMutationGoTo(NavigationEnum.lobby));
-      if (this.winner) {
-        this.$store.dispatch(new UsersStoreSignInAction(this.winner.name));
-      }
     }
   }
 });

@@ -3,7 +3,7 @@
     <div class="col-12 header-state">
       <state v-bind:state="enemy.state" v-on:play="play_on_enemy"/>
       <div>
-        <icon v-if="!enemy.turn" v-bind:name="'hourglass'"/>
+        <icon v-if="myTurn" v-bind:name="'hourglass'"/>
         <label class="name">{{enemy.name}}</label>
       </div>
     </div>
@@ -12,7 +12,7 @@
     </div>
     <div class="col-12 footer-state">
       <div>
-        <icon v-if="!user.turn" v-bind:name="'hourglass'"/>
+        <icon v-if="!myTurn" v-bind:name="'hourglass'"/>
         <label class="name">{{user.name}}</label>
       </div>
       <state v-bind:state="user.state" v-on:play="play_on_user"/>
@@ -30,6 +30,7 @@ import {
 } from "@/vuex/users.store-module";
 import { User } from "@/interface/user";
 import IconVue from "@/components/Icon.vue";
+import { functions } from "firebase";
 export default Vue.extend({
   name: "game",
   components: {
@@ -37,15 +38,15 @@ export default Vue.extend({
     state: StateVue,
     icon: IconVue
   },
-  mounted: function() {
-    this.$store.dispatch(new UsersStoreStartGameAction());
-  },
   computed: {
+    myTurn: function(): boolean {
+      return this.$store.getters.myTurn;
+    },
     enemy: function(): User {
-      return this.$store.getters.enemy;
+      return this.$store.state.users.enemy;
     },
     user: function(): User {
-      return this.$store.getters.user;
+      return this.$store.state.users.user;
     }
   },
   methods: {

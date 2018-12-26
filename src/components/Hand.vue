@@ -37,19 +37,18 @@ export default Vue.extend({
   computed: {
     hand: {
       get(): string[] {
-        return this.$store.getters.user.hand;
+        return this.$store.state.users.user.hand;
       },
       set(v: string[]) {
         this.$store.dispatch(new UsersStorePermuteHandAction(v));
       }
     },
     draggableOptions: function() {
-      console.log(this.$store.getters.user.turn);
       return {
         group: { name: "icons", put: true, pull: true },
         sort: true,
         ghostClass: "ghost",
-        disabled: !this.$store.getters.user.turn
+        disabled: !this.$store.getters.myTurn
       };
     }
   },

@@ -1,15 +1,15 @@
 import { ReactivePlayable } from './reactive-playable';
-import { CollectableTribe, HarmfulTribe } from './tribe';
 import { Behaviour } from './behaviour';
 import { RemoveBehaviour } from './remove.behaviour';
 import { TargetTribe } from './target/target-tribe';
 import { TargetFirst } from './target/target-first';
+import { Tribe, NullTribe } from './tribe';
 
 export class HarmfulPlayable implements ReactivePlayable {
-  tribe: HarmfulTribe;
+  tribe: Tribe;
 
   dispatch(): Behaviour[] {
-    return [new RemoveBehaviour(new TargetTribe(new CollectableTribe()), new TargetFirst())]
+    return [new RemoveBehaviour(new TargetTribe(NullTribe), new TargetFirst())];
   }
 
   react(events: Behaviour[]): Behaviour[] {
@@ -17,6 +17,6 @@ export class HarmfulPlayable implements ReactivePlayable {
   }
 
   constructor(public name: string) {
-    this.tribe = new HarmfulTribe();
+    this.tribe = NullTribe;
   }
 }

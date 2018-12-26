@@ -4,42 +4,15 @@ import { FirestoreService } from '@/service/firestore.service';
 import { GameService } from '@/service/game-service';
 import { NavigationMutationGoTo, NavigationEnum } from './navigation.store';
 import { FirestoreUserService } from '@/service/firestore-user.service';
-
-interface UsersState {
-  users: User[];
-  currentUser: string;
-}
-
-const db = FirestoreService.getInstance().getDB();
+import { LobbyStoreEnterAction } from './lobby.store-module';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
 );
 
-export class UsersStoreFetchUsersAction {
-  public type: string;
-  constructor() {
-    this.type = 'fetchUsers';
-  }
-}
-
-export class UsersStoreSignInAction {
-  public type: string;
-  constructor(public name: string) {
-    this.type = 'signIn';
-  }
-}
-
-export class UsersStoreChallengeAction {
-  public type: string;
-  constructor(public name: string) {
-    this.type = 'challenge';
-  }
-}
-
 export class UsersStoreStartGameAction {
   public type: string;
-  constructor() {
+  constructor(public enemyName: string) {
     this.type = 'startGame';
   }
 }
@@ -56,114 +29,91 @@ export class UsersStorePermuteHandAction {
   constructor(public newHand: string[]) {}
 }
 
+export class UsersStoreSetUser {
+  type = 'setUser';
+  constructor(public name: string) {}
+}
+
+export class UsersStoreSetEnemy {
+  type = 'setEnemy';
+  constructor(public name: string) {}
+}
+
+interface UsersState {
+  user: User | null;
+  _userHook: () => void;
+  enemy: User | null;
+  _enemyHook: () => void;
+}
+
 export const UsersStore: StoreOptions<UsersState> = {
   state: {
-    users: [],
-    currentUser: ''
+    user: null,
+    _userHook: () => {},
+    enemy: null,
+    _enemyHook: () => {}
   },
   getters: {
-    user: function(state): User | undefined {
-      return state.users.find(i => i.name === state.currentUser);
-    },
-    enemy: function(state, getters) {
-      if (!getters.user) return false;
-      return state.users.find(
-        i => i.name === (getters.user as User).challenging
-      );
-    },
-    nonMeUsers: function(state) {
-      return state.users.filter(i => i.name !== state.currentUser);
-    },
-    availableUsers: function(state, getters) {
-      return (getters.nonMeUsers as User[]).filter(i => !i.challenging);
-    },
-    challengingMeUsers: function(state) {
-      return state.users.filter(i => i.challenging === state.currentUser);
-    },
-    inGame: function(state, getters) {
-      return (
-        !!getters.enemy &&
-        (getters.enemy as User).challenging === state.currentUser
-      );
-    },
-    winner: function(state, getters): User | null {
-      if (getters.user.winner) return getters.user;
-      else if (getters.enemy.winner) return getters.enemy;
-      return null;
+    myTurn: function(state) {
+      if (!state.user || !state.enemy) return false;
+      if (state.user.turn) return true;
+      if (state.enemy.turn) return false;
+      return state.user.roll > state.enemy.roll;
     }
   },
   mutations: {
-    setUsers: function(state, users: User[]) {
-      state.users = users;
+    setUser: function(state, user: User) {
+      state.user = user;
     },
-    setCurrentUser: function(state, name: string) {
-      state.currentUser = name;
+    setUserHook: function(state, hook: () => void) {
+      state._userHook = hook;
+    },
+    setEnemy: function(state, user: User) {
+      state.enemy = user;
+    },
+    setEnemyHook: function(state, hook: () => void) {
+      state._enemyHook = hook;
     }
   },
   actions: {
-    fetchUsers: function(context) {
-      db.collection('users').onSnapshot(query => {
-        const temp = [] as User[];
-        query.forEach(q => temp.push({ ...(q.data() as User), name: q.id }));
-        context.commit('setUsers', temp);
-        if (
-          context.getters.user &&
-          context.getters.enemy &&
-          !context.getters.user.turn &&
-          !context.getters.enemy.turn &&
-          context.getters.user.roll &&
-          context.getters.enemy.roll &&
-          context.getters.user.name === context.getters.enemy.challenging
-        ) {
-          console.log(context.getters.user.roll, context.getters.enemy.roll);
-          const user =
-            context.getters.user.roll > context.getters.enemy.roll
-              ? context.getters.user
-              : context.getters.enemy;
-          userService.updateUser({
-            name: user.name,
-            turn: true
-          });
-          userService.updateUser({
-            name: context.getters.user.name,
-            roll: 0
-          });
-          userService.updateUser({
-            name: context.getters.enemy.name,
-            roll: 0
-          });
+    setUser: function(context, action: UsersStoreSetUser) {
+      context.state._userHook();
+      const hook = userService.listenToUserChanges(
+        action.name,
+        (user: null | User) => {
+          if (!user) {
+            userService.setUser({ name: action.name, challenging: '' });
+          } else {
+            if (!context.state.user) {
+              context.dispatch(new LobbyStoreEnterAction(action.name));
+            }
+            context.commit('setUser', user);
+          }
         }
-        if (
-          context.getters.user &&
-          context.getters.enemy &&
-          !context.getters.user.winner &&
-          !context.getters.enemy.winner &&
-          context.getters.user.name === context.getters.enemy.challenging
-        ) {
-          context.commit(new NavigationMutationGoTo(NavigationEnum.game));
+      );
+      context.commit('setUserHook', hook);
+    },
+    setEnemy: function(context, action: UsersStoreSetEnemy) {
+      context.state._enemyHook();
+      const hook = userService.listenToUserChanges(
+        action.name,
+        (user: null | User) => {
+          if (!user) return;
+          if (!context.state.enemy) {
+            context.commit(new NavigationMutationGoTo(NavigationEnum.game));
+          }
+          context.commit('setEnemy', user);
         }
-      });
+      );
+      context.commit('setEnemyHook', hook);
     },
-    signIn: function(context, action: UsersStoreSignInAction) {
-      userService
-        .setUser({ name: action.name })
-        .then(() => {
-          context.commit('setCurrentUser', action.name);
-          context.commit(new NavigationMutationGoTo(NavigationEnum.lobby));
-        })
-        .catch(() => {});
-    },
-    challenge: function(context, action: UsersStoreChallengeAction) {
-      let toChallenge = action.name;
-      if (context.getters.user.challenging === action.name) toChallenge = '';
+    startGame: function(context, action: UsersStoreStartGameAction) {
+      if (!context.state.user) return;
+      context.dispatch(new UsersStoreSetEnemy(action.enemyName));
       userService.updateUser({
-        name: context.state.currentUser,
-        challenging: toChallenge
-      });
-    },
-    startGame: function(context, action: UsersStoreChallengeAction) {
-      userService.updateUser({
-        name: context.state.currentUser,
+        name: context.state.user.name,
+        playing: action.enemyName,
+        challenging: '',
         roll: Math.random(),
         turn: false,
         winner: false,
@@ -171,45 +121,57 @@ export const UsersStore: StoreOptions<UsersState> = {
           .fill(1)
           .map(() => GameService.getInstance().getRandomIcon()) as string[],
         state: ['bowels'] as string[]
-      } as User);
+      });
     },
     play: function(context, action: UsersStorePlayAction) {
-      const user = context.getters.user as User;
+      if (!context.state.user) return;
+      if (!context.state.enemy) return;
       let userTarget;
-      if (action.target === user.name) userTarget = user;
-      else userTarget = context.state.users.find(i => i.name === action.target);
-      if (!userTarget) return;
+      if (action.target === context.state.user.name)
+        userTarget = context.state.user;
+      else userTarget = context.state.enemy;
+
       const tempState = GameService.getInstance().play(
-        user.hand[action.playedIndex],
+        context.state.user.hand[action.playedIndex],
         userTarget.state
       );
-      const targetWon = GameService.getInstance().isWinConditionMet(
-        tempState.map(i => i.name)
-      );
-      if (targetWon) {
-        context.commit(new NavigationMutationGoTo(NavigationEnum.finish));
-        userService.updateUser({ name: userTarget.name, winner: true });
-      } else {
-        userService.updateUser({
-          name: userTarget.name,
-          state: tempState.map(i => i.name)
-        });
-        userService.updateUser({
-          name: user.name,
-          turn: false,
-          hand: user.hand
-            .filter((_, index) => index !== action.playedIndex)
-            .concat(GameService.getInstance().getRandomIcon())
-        });
-        userService.updateUser({
-          name: context.getters.enemy.name,
-          turn: true
-        });
-      }
+      // const targetWon = GameService.getInstance().isWinConditionMet(
+      //   tempState.map(i => i.name)
+      // );
+      // if (targetWon) {
+      //   context.commit(new NavigationMutationGoTo(NavigationEnum.finish));
+      //   userService.updateUser({
+      //     name: userTarget.name,
+      //     winner: true
+      //   });
+      // }
+      userService.updateUser({
+        name: context.state.user.name,
+        turn: false,
+        roll: 0,
+        lastPlay: context.state.user.hand[action.playedIndex],
+        hand: context.state.user.hand
+          .filter((_, index) => index !== action.playedIndex)
+          .concat(GameService.getInstance().getRandomIcon()),
+        state:
+          context.state.user.name === userTarget.name
+            ? tempState.map(i => i.name)
+            : context.state.user.state
+      });
+      userService.updateUser({
+        name: context.state.enemy.name,
+        turn: true,
+        roll: 0,
+        state:
+          context.state.enemy.name === userTarget.name
+            ? tempState.map(i => i.name)
+            : context.state.enemy.state
+      });
     },
     permuteHand: function(context, action: UsersStorePermuteHandAction) {
+      if (!context.state.user) return null;
       userService.updateUser({
-        name: context.getters.user.name,
+        name: context.state.user.name,
         hand: action.newHand
       });
     }

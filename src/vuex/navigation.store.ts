@@ -7,13 +7,13 @@ export enum NavigationEnum {
   finish
 }
 
-export interface NavigationState {
-  screen: NavigationEnum;
-}
-
 export class NavigationMutationGoTo {
   type = 'navigateTo';
   constructor(public destination: NavigationEnum) {}
+}
+
+export interface NavigationState {
+  screen: NavigationEnum;
 }
 
 export const NavigationStore: StoreOptions<NavigationState> = {

@@ -3,7 +3,7 @@ import { Behaviour } from './behaviour';
 import { CollectBehaviour } from './collect.behaviour';
 import { TargetLast } from './target/target-last';
 import { TargetFirst } from './target/target-first';
-import { Tribe } from './tribe';
+import { Tribe, NullTribe } from './tribe';
 
 export class CollectablePlayable implements ReactivePlayable {
   tribe: Tribe;
@@ -17,7 +17,7 @@ export class CollectablePlayable implements ReactivePlayable {
   }
 
   constructor(public name: string) {
-    this.tribe = new CollectableTribe();
+    this.tribe = NullTribe;
   }
 }
 
