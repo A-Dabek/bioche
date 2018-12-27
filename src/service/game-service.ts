@@ -26,7 +26,7 @@ export class GameService {
   isWinConditionMet(state: string[]): boolean {
     return (
       state.map(i => this.getPlayable(i)).filter(i => i.tribe === OrganTribe)
-        .length >= 8
+        .length >= 4
     );
   }
 

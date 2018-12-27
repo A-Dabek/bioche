@@ -2,31 +2,13 @@
   <div class="row game-root">
     <div class="col-12 header-state game-content">
       <state v-bind:state="enemy.state" v-on:play="play_on_enemy"/>
-      <div class="row">
-        <div class="col-6">
-          <icon v-if="myTurn" v-bind:name="'hourglass'"/>
-          <label class="name">{{enemy.name}}</label>
-        </div>
-        <div class="col-6">
-          <icon v-if="!!enemy.lastPlay" v-bind:name="enemy.lastPlay"/>
-          <label class="name">ostatnio zagrane</label>
-        </div>
-      </div>
+      <hud v-bind:user="enemy" v-bind:turn="!myTurn"/>
     </div>
     <div class="col-12 hand game-content">
       <hand/>
     </div>
     <div class="col-12 footer-state">
-      <div class="row">
-        <div class="col-6">
-          <icon v-if="!myTurn" v-bind:name="'hourglass'"/>
-          <label class="name">{{user.name}}</label>
-        </div>
-        <div class="col-6">
-          <icon v-if="!!user.lastPlay" v-bind:name="user.lastPlay"/>
-          <label class="name">ostatnio zagrane</label>
-        </div>
-      </div>
+      <hud v-bind:user="user" v-bind:turn="myTurn"/>
       <state v-bind:state="user.state" v-on:play="play_on_user"/>
     </div>
   </div>
@@ -43,12 +25,14 @@ import {
 import { User } from "@/interface/user";
 import IconVue from "@/components/Icon.vue";
 import { functions } from "firebase";
+import HudVue from "@/components/Hud.vue";
 export default Vue.extend({
   name: "game",
   components: {
     hand: HandVue,
     state: StateVue,
-    icon: IconVue
+    icon: IconVue,
+    hud: HudVue
   },
   computed: {
     myTurn: function(): boolean {
@@ -86,10 +70,5 @@ export default Vue.extend({
 }
 .game-content {
   flex: 1;
-}
-.name {
-  margin-left: 10px;
-  font-weight: bold;
-  font-size: 1.5em;
 }
 </style>

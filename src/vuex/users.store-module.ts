@@ -87,6 +87,15 @@ export const UsersStore: StoreOptions<UsersState> = {
             if (!context.state.user) {
               context.dispatch(new LobbyStoreEnterAction(action.name));
             }
+            if (
+              context.state.user &&
+              !context.state.user.winner &&
+              !!user.winner
+            ) {
+              context.commit(new NavigationMutationGoTo(NavigationEnum.finish));
+              context.state._enemyHook();
+              context.commit('setEnemy', null);
+            }
             context.commit('setUser', user);
           }
         }
@@ -116,7 +125,8 @@ export const UsersStore: StoreOptions<UsersState> = {
         challenging: '',
         roll: Math.random(),
         turn: false,
-        winner: false,
+        winner: '',
+        lastPlay: '',
         hand: Array(4)
           .fill(1)
           .map(() => GameService.getInstance().getRandomIcon()) as string[],
@@ -135,16 +145,28 @@ export const UsersStore: StoreOptions<UsersState> = {
         context.state.user.hand[action.playedIndex],
         userTarget.state
       );
-      // const targetWon = GameService.getInstance().isWinConditionMet(
-      //   tempState.map(i => i.name)
-      // );
-      // if (targetWon) {
-      //   context.commit(new NavigationMutationGoTo(NavigationEnum.finish));
-      //   userService.updateUser({
-      //     name: userTarget.name,
-      //     winner: true
-      //   });
-      // }
+      const targetWon = GameService.getInstance().isWinConditionMet(
+        tempState.map(i => i.name)
+      );
+      if (targetWon) {
+        userService.updateUser({
+          name: context.state.user.name,
+          winner: userTarget.name,
+          playing: '',
+          challenging: '',
+          turn: false,
+          lastPlay: ''
+        });
+        userService.updateUser({
+          name: context.state.enemy.name,
+          winner: userTarget.name,
+          playing: '',
+          challenging: '',
+          turn: false,
+          lastPlay: ''
+        });
+        return;
+      }
       userService.updateUser({
         name: context.state.user.name,
         turn: false,

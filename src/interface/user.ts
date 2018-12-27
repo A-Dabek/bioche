@@ -5,7 +5,7 @@ export interface User {
   lastPlay: string;
   challenging: string;
   playing: string;
-  winner: boolean;
+  winner: string;
   turn: boolean;
   roll: number;
 }

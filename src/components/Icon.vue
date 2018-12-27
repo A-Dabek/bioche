@@ -3,7 +3,7 @@
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
-      style="height: 50px; width: 50px;"
+      style="min-height: 10px; max-height: 200px; height: 50px; min-width: 10px; max-width: 200px; width: 50px;"
     >
       <path d="M0 0h512v512H0z" fill="#fff" fill-opacity="1"></path>
       <g transform="translate(0,0)" style="touch-action: none;">

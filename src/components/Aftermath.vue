@@ -1,7 +1,7 @@
 <template>
   <div class="row" v-on:click="back_to_lobby">
     <div clas="col-12">
-      <h1>Zwyciężyl {{winner ? winner.name : ''}}</h1>
+      <h1>Zwyciężyl {{winner}}</h1>
     </div>
   </div>
 </template>
@@ -14,16 +14,20 @@ import {
   NavigationMutationGoTo,
   NavigationEnum
 } from "@/vuex/navigation.store";
+import { LobbyStoreEnterAction } from "@/vuex/lobby.store-module";
 export default Vue.extend({
   name: "aftermath",
   computed: {
-    winner: function(): User | null {
-      return this.$store.getters.winner;
+    winner: function(): string {
+      return this.$store.state.users.user.winner;
+    },
+    me: function(): string {
+      return this.$store.state.users.user.name;
     }
   },
   methods: {
     back_to_lobby: function() {
-      this.$store.commit(new NavigationMutationGoTo(NavigationEnum.lobby));
+      this.$store.dispatch(new LobbyStoreEnterAction(this.me));
     }
   }
 });
