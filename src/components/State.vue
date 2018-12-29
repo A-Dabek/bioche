@@ -6,7 +6,11 @@
       v-on:add="on_drop($event)"
     >
       <span v-for="(i, index) of state" v-bind:key="index">
-        <icon v-bind:name="i"/>
+        <icon
+          v-bind:name="i.name"
+          v-bind:count="i.durability"
+          v-bind:color="i.active ? '#000' : '#777'"
+        />
       </span>
     </draggable>
   </div>
@@ -16,6 +20,7 @@
 import Vue from "vue";
 import IconVue from "@/components/Icon.vue";
 import draggable from "vuedraggable";
+import { PlayableState } from "@/interface/playable-state";
 export default Vue.extend({
   name: "state",
   components: {
@@ -23,14 +28,17 @@ export default Vue.extend({
     draggable
   },
   props: {
-    state: { type: Array as () => Array<string>, default: () => [] as string[] }
+    state: {
+      type: Array as () => Array<PlayableState>,
+      default: () => [] as PlayableState[]
+    }
   },
   computed: {
     icons: {
-      get(): string[] {
+      get(): PlayableState[] {
         return this.state;
       },
-      set(v: string[]) {}
+      set(v: PlayableState[]) {}
     }
   },
   methods: {

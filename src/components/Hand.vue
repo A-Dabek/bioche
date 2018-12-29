@@ -5,9 +5,9 @@
     </div>
     <div class="hand" v-else>
       <draggable v-model="hand" v-bind:options="draggableOptions">
-        <span v-for="(i, index) of hand" v-bind:key="index">
+        <div style="display: inline-block" v-for="(i, index) of hand" v-bind:key="index">
           <icon v-bind:name="i" v-on:click.native="show_desc(i)"/>
-        </span>
+        </div>
       </draggable>
     </div>
   </div>
@@ -48,6 +48,7 @@ export default Vue.extend({
         group: { name: "icons", put: true, pull: true },
         sort: true,
         ghostClass: "ghost",
+        dragClass: "drag",
         disabled: !this.$store.getters.myTurn
       };
     }
@@ -72,6 +73,11 @@ export default Vue.extend({
   margin-bottom: 20px;
 }
 .ghost {
-  opacity: 0.5;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.drag {
+  opacity: 1;
 }
 </style>

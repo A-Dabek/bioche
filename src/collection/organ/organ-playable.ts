@@ -1,15 +1,24 @@
-import { OrganTribe } from "./organ.tribe";
-import { Tribe } from "@/core/tribe";
-import { ReactivePlayable } from "@/core/reactive-playable";
-import { Behaviour } from "@/core/behaviour";
-import { CollectBehaviour } from "@/core/collect.behaviour";
-import { TargetLast } from "@/core/target/target-last";
+import { OrganTribe } from './organ.tribe';
+import { Tribe } from '@/core/tribe';
+import { Behaviour } from '@/core/behaviour';
+import { StatefulPlayable } from '@/core/stateful-playable';
+import { PlayableState } from '@/interface/playable-state';
 
-export abstract class OrganPlayable implements ReactivePlayable {
+export abstract class OrganPlayable implements StatefulPlayable {
+  durability: number;
+  active: boolean;
   tribe: Tribe;
 
+  getState(): PlayableState {
+    return {
+      durability: this.durability,
+      active: this.active,
+      name: this.name
+    };
+  }
+
   dispatch(): Behaviour[] {
-    return [new CollectBehaviour(new TargetLast())];
+    return [];
   }
 
   react(events: Behaviour[]): Behaviour[] {
@@ -18,5 +27,7 @@ export abstract class OrganPlayable implements ReactivePlayable {
 
   constructor(public name: string) {
     this.tribe = OrganTribe;
+    this.durability = 10;
+    this.active = true;
   }
 }

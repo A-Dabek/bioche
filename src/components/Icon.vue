@@ -7,7 +7,25 @@
     >
       <path d="M0 0h512v512H0z" fill="#fff" fill-opacity="1"></path>
       <g transform="translate(0,0)" style="touch-action: none;">
-        <path v-bind:d="path" fill="#000" fill-opacity="1"></path>
+        <path v-bind:d="path" v-bind:fill="this.color" fill-opacity="1"></path>
+      </g>
+      <g
+        v-if="count != null"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="120"
+        font-style="normal"
+        font-weight="bold"
+        text-anchor="middle"
+        class
+        style="touch-action: none;"
+        transform="translate(433,101)"
+      >
+        <text stroke="#000" stroke-width="30">
+          <tspan x="0" y="0">{{count}}</tspan>
+        </text>
+        <text fill="#fff">
+          <tspan x="0" y="0">{{count}}</tspan>
+        </text>
       </g>
     </svg>
   </div>
@@ -21,7 +39,9 @@ export default Vue.extend({
     return {};
   },
   props: {
-    name: { type: String, default: "" }
+    name: { type: String, default: "" },
+    color: { type: String, default: "#000" },
+    count: { type: Number, default: null }
   },
   computed: {
     path: function() {

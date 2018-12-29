@@ -5,6 +5,7 @@ import { GameService } from '@/service/game-service';
 import { NavigationMutationGoTo, NavigationEnum } from './navigation.store';
 import { FirestoreUserService } from '@/service/firestore-user.service';
 import { LobbyStoreEnterAction } from './lobby.store-module';
+import { HeartOrgan } from '@/collection/organ/heart-organ';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
@@ -130,7 +131,7 @@ export const UsersStore: StoreOptions<UsersState> = {
         hand: Array(4)
           .fill(1)
           .map(() => GameService.getInstance().getRandomIcon()) as string[],
-        state: ['bowels'] as string[]
+        state: [new HeartOrgan().getState()]
       });
     },
     play: function(context, action: UsersStorePlayAction) {
@@ -145,9 +146,7 @@ export const UsersStore: StoreOptions<UsersState> = {
         context.state.user.hand[action.playedIndex],
         userTarget.state
       );
-      const targetWon = GameService.getInstance().isWinConditionMet(
-        tempState.map(i => i.name)
-      );
+      const targetWon = GameService.getInstance().isWinConditionMet(tempState);
       if (targetWon) {
         userService.updateUser({
           name: context.state.user.name,
@@ -155,7 +154,9 @@ export const UsersStore: StoreOptions<UsersState> = {
           playing: '',
           challenging: '',
           turn: false,
-          lastPlay: ''
+          lastPlay: '',
+          hand: [],
+          state: []
         });
         userService.updateUser({
           name: context.state.enemy.name,
@@ -163,7 +164,9 @@ export const UsersStore: StoreOptions<UsersState> = {
           playing: '',
           challenging: '',
           turn: false,
-          lastPlay: ''
+          lastPlay: '',
+          hand: [],
+          state: []
         });
         return;
       }
@@ -177,7 +180,7 @@ export const UsersStore: StoreOptions<UsersState> = {
           .concat(GameService.getInstance().getRandomIcon()),
         state:
           context.state.user.name === userTarget.name
-            ? tempState.map(i => i.name)
+            ? tempState
             : context.state.user.state
       });
       userService.updateUser({
@@ -186,7 +189,7 @@ export const UsersStore: StoreOptions<UsersState> = {
         roll: 0,
         state:
           context.state.enemy.name === userTarget.name
-            ? tempState.map(i => i.name)
+            ? tempState
             : context.state.enemy.state
       });
     },

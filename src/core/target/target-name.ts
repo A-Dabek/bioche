@@ -1,10 +1,10 @@
 import { Target } from './target';
-import { Playable } from '../playable';
+import { StatefulPlayable } from '../stateful-playable';
 
 export class TargetName implements Target {
-    pointTargets(playables: Playable[]): Playable[] {
-      return playables.filter(i => i.name === this.name)
-    }
-  
-    constructor(private name: string) { }
+  pointTargets(playables: StatefulPlayable[]): StatefulPlayable[] {
+    return playables.filter(i => i.name === this.name);
   }
+
+  constructor(private name: string) {}
+}
