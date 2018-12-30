@@ -4,12 +4,12 @@ import { Change } from '@/core/change/change';
 import { ChangeActive, ChangeToggleActive } from '@/core/change/change-active';
 import { ChangeDurability } from '@/core/change/change-durability';
 
-export class DefibrilateEffect implements StatelessPlayable {
+export class GlassShotPlayable implements StatelessPlayable {
   name: string;
   tribe: Tribe;
 
   dispatch(): Change[] {
-    return [new ChangeToggleActive('heart'), new ChangeDurability('heart', -1)];
+    return [new ChangeActive('kidneys', true)];
   }
 
   constructor() {

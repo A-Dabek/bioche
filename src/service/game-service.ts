@@ -1,4 +1,4 @@
-import { ReactivePlayable } from '@/core/reactive-playable';
+import { StatelessPlayable } from '@/core/stateless-playable';
 import { Playable } from '@/core/playable';
 import { BowelsOrgan } from '@/collection/organ/bowels-organ';
 import { KidneysOrgan } from '@/collection/organ/kidneys-organ';
@@ -11,15 +11,15 @@ import { OrganTribe } from '@/collection/organ/organ.tribe';
 import { DefibrilateEffect } from '@/collection/effects/defibrilate.playable';
 import { PlayableState } from '@/interface/playable-state';
 import { StatefulPlayable } from '@/core/stateful-playable';
+import { Change } from '@/core/change/change';
+import { GlassShotPlayable } from '@/collection/effects/glass-shot.playable';
 
 export class GameService {
   private static instance: GameService;
   private statefulLibrary: {
     [k: string]: (state: PlayableState) => StatefulPlayable;
   };
-  private statelessLibrary: {
-    [k: string]: () => ReactivePlayable;
-  };
+  private statelessLibrary: { [k: string]: () => StatelessPlayable };
 
   play(p: string, states: PlayableState[]): PlayableState[] {
     const played = this.statelessLibrary[p]();
@@ -27,6 +27,16 @@ export class GameService {
       played,
       states.map(i => this.statefulLibrary[i.name](i))
     );
+  }
+
+  endTurn(state: PlayableState[]): PlayableState[] {
+    let newState: StatefulPlayable[] = state.map(i =>
+      this.statefulLibrary[i.name](i)
+    );
+    let events = [] as Change[];
+    newState.forEach(h => (events = events.concat(h.onTurnEnd())));
+    events.forEach(ev => (newState = ev.applyToTargetState(newState)));
+    return newState.map(i => i.getState());
   }
 
   getRandomIcon(): string {
@@ -44,26 +54,27 @@ export class GameService {
   }
 
   private eventHandler(
-    played: ReactivePlayable,
+    played: StatelessPlayable,
     state: StatefulPlayable[]
   ): PlayableState[] {
     let events = played.dispatch();
     let newState: StatefulPlayable[] = [...state];
     state.forEach(h => (events = h.react(events)));
-    events.forEach(ev => (newState = ev.process(played, newState)));
+    events.forEach(ev => (newState = ev.applyToTargetState(newState)));
     return newState.map(i => i.getState());
   }
 
   private constructor() {
     this.statelessLibrary = {
-      defibrilate: () => new DefibrilateEffect()
+      defibrilate: () => new DefibrilateEffect(),
+      glass_shot: () => new GlassShotPlayable()
     };
     this.statefulLibrary = {
-      heart: state => new HeartOrgan(state)
+      heart: state => new HeartOrgan(state),
+      brain: state => new BrainOrgan(state),
+      kidneys: state => new KidneysOrgan(state)
     };
     // bowels: () => new BowelsOrgan(),
-    // brain: () => new BrainOrgan(),
-    // kidneys: () => new KidneysOrgan(),
     // liver: () => new LiverOrgan(),
     // lungs: () => new LungsOrgan(),
     // stomach: () => new StomachOrgan()

@@ -6,6 +6,8 @@ import { NavigationMutationGoTo, NavigationEnum } from './navigation.store';
 import { FirestoreUserService } from '@/service/firestore-user.service';
 import { LobbyStoreEnterAction } from './lobby.store-module';
 import { HeartOrgan } from '@/collection/organ/heart-organ';
+import { BrainOrgan } from '@/collection/organ/brain-organ';
+import { KidneysOrgan } from '@/collection/organ/kidneys-organ';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
@@ -131,7 +133,11 @@ export const UsersStore: StoreOptions<UsersState> = {
         hand: Array(4)
           .fill(1)
           .map(() => GameService.getInstance().getRandomIcon()) as string[],
-        state: [new HeartOrgan().getState()]
+        state: [
+          new BrainOrgan().getState(),
+          new HeartOrgan().getState(),
+          new KidneysOrgan().getState()
+        ]
       });
     },
     play: function(context, action: UsersStorePlayAction) {
@@ -178,10 +184,11 @@ export const UsersStore: StoreOptions<UsersState> = {
         hand: context.state.user.hand
           .filter((_, index) => index !== action.playedIndex)
           .concat(GameService.getInstance().getRandomIcon()),
-        state:
+        state: GameService.getInstance().endTurn(
           context.state.user.name === userTarget.name
             ? tempState
             : context.state.user.state
+        )
       });
       userService.updateUser({
         name: context.state.enemy.name,
