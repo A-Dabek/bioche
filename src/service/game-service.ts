@@ -1,13 +1,7 @@
 import { StatelessPlayable } from '@/core/stateless-playable';
-import { Playable } from '@/core/playable';
-import { BowelsOrgan } from '@/collection/organ/bowels-organ';
 import { KidneysOrgan } from '@/collection/organ/kidneys-organ';
-import { LiverOrgan } from '@/collection/organ/liver-organ';
 import { BrainOrgan } from '@/collection/organ/brain-organ';
 import { HeartOrgan } from '@/collection/organ/heart-organ';
-import { LungsOrgan } from '@/collection/organ/lungs-organ';
-import { StomachOrgan } from '@/collection/organ/stomach-organ';
-import { OrganTribe } from '@/collection/organ/organ.tribe';
 import { DefibrilateEffect } from '@/collection/effects/defibrilate.playable';
 import { PlayableState } from '@/interface/playable-state';
 import { StatefulPlayable } from '@/core/stateful-playable';
@@ -74,10 +68,6 @@ export class GameService {
       brain: state => new BrainOrgan(state),
       kidneys: state => new KidneysOrgan(state)
     };
-    // bowels: () => new BowelsOrgan(),
-    // liver: () => new LiverOrgan(),
-    // lungs: () => new LungsOrgan(),
-    // stomach: () => new StomachOrgan()
     Object.keys(this.statefulLibrary)
       .concat(Object.keys(this.statelessLibrary))
       .forEach(key => {
