@@ -22,18 +22,21 @@ import IconVue from "@/components/Icon.vue";
 import EnemyListVue from "@/components/EnemyList.vue";
 import UserbioVue from "@/components/Userbio.vue";
 import PalettesVue from "@/components/Palettes.vue";
+import ChallengingListVue from "@/components/ChallengingList.vue";
 export default Vue.extend({
   name: "interface",
   components: {
     icon: IconVue,
     enemyList: EnemyListVue,
-    palettes: PalettesVue
+    palettes: PalettesVue,
+    challengingList: ChallengingListVue
   },
   data: function() {
     return {
       activeTab: 0,
       tabs: [
-        { icon: "face_to_face", label: "Lobby" },
+        { icon: "face_to_face", label: "Gotowi gracze" },
+        { icon: "swords_power", label: "Zaproszenia do gry" },
         { icon: "palette", label: "Palety" }
       ]
     };
@@ -41,7 +44,8 @@ export default Vue.extend({
   computed: {
     currentTabComponent: function() {
       if (this.activeTab === 0) return "enemyList";
-      if (this.activeTab === 1) return "palettes";
+      if (this.activeTab === 1) return "challengingList";
+      if (this.activeTab === 2) return "palettes";
       return "";
     }
   }

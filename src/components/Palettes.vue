@@ -1,16 +1,12 @@
 <template>
   <div class="root row">
-    <div class="col-12">
-      <icon v-bind:name="'palette'"/>
-      <label class="bio-label ml-2">{{palette.name}}</label>
-    </div>
-    <div class="col-6" v-for="p of palettes" v-bind:key="p.name">
+    <div class="col-6" v-for="p of palettes" v-bind:key="p.name" v-on:click="pickPalette(p.idDoc)">
       <icon
         v-bind:name="'palette'"
         v-bind:strokeColor="p.primary"
         v-bind:backgroundColor="p.secondary"
       />
-      <label v-on:click="pickPalette(p.name)" class="bio-label ml-2">{{p.name}}</label>
+      <label class="bio-label ml-2">{{p.name}}</label>
     </div>
   </div>
 </template>
@@ -25,15 +21,7 @@ export default Vue.extend({
   components: {
     icon: IconVue
   },
-  data: function() {
-    return {};
-  },
   computed: {
-    palette: function(): Palette {
-      return this.$store.getters.getPalette(
-        this.$store.state.users.user.palette
-      );
-    },
     palettes: function(): Palette[] {
       return Object.values(this.$store.state.palettes.library);
     }

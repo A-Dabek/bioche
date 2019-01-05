@@ -17,7 +17,12 @@ export class PaletteLibraryInitAction {
 export const PaletteLibraryStore: StoreOptions<PaletteLibraryState> = {
   state: {
     library: {},
-    default: { name: 'Black`n`white', primary: '000', secondary: 'fff' }
+    default: {
+      name: 'Black`n`white',
+      primary: '000',
+      secondary: 'fff',
+      idDoc: ''
+    }
   },
   getters: {
     getPalette: state => (name: string) => {
@@ -37,7 +42,7 @@ export const PaletteLibraryStore: StoreOptions<PaletteLibraryState> = {
         .get()
         .then(query => {
           const library = {} as any;
-          query.forEach(q => (library[q.id] = { ...q.data(), name: q.id }));
+          query.forEach(q => (library[q.id] = { ...q.data(), idDoc: q.id }));
           context.commit('initPaletteLibrary', library);
         })
         .catch(() => context.commit('initPaletteLibrary', {}));
