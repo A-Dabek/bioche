@@ -1,11 +1,11 @@
 <template>
-  <div id="app" class="container">
+  <div id="app" class="container mt-1">
     <div class="row">
       <div class="col-12" v-if="showLoggingScreen">
         <login/>
       </div>
       <div class="col-12" v-if="showLobbyScreen">
-        <enemy-list/>
+        <interface/>
       </div>
       <div class="col-12" v-if="showGameScreen">
         <game/>
@@ -31,18 +31,22 @@ import EnemyListVue from "@/components/EnemyList.vue";
 import GameVue from "@/components/Game.vue";
 import { IconLibraryInitAction } from "@/vuex/icon-library.store-module";
 import AftermathVue from "@/components/Aftermath.vue";
+import UserbioVue from "@/components/Userbio.vue";
+import { PaletteLibraryInitAction } from "@/vuex/palette-library.store-module";
+import InterfaceVue from "@/components/Interface.vue";
 
 export default Vue.extend({
   name: "app-app",
   components: {
     login: LoginVue,
-    "enemy-list": EnemyListVue,
+    interface: InterfaceVue,
     game: GameVue,
     aftermath: AftermathVue
   },
   store: AppStoreObject,
   mounted: function() {
     this.$store.dispatch(new IconLibraryInitAction());
+    this.$store.dispatch(new PaletteLibraryInitAction());
   },
   computed: {
     showLoggingScreen: function() {

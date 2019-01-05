@@ -4,6 +4,7 @@ import { IconLibraryStore } from './icon-library.store-module';
 import { UsersStore } from './users.store-module';
 import { NavigationStore } from './navigation.store';
 import { LobbyStore } from './lobby.store-module';
+import { PaletteLibraryStore } from './palette-library.store-module';
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export const AppStoreObject = new Vuex.Store<any>({
     library: IconLibraryStore,
     users: UsersStore,
     navigation: NavigationStore,
-    lobby: LobbyStore
+    lobby: LobbyStore,
+    palettes: PaletteLibraryStore
   }
 });

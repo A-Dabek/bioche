@@ -10,4 +10,5 @@ export interface User {
   winner: string;
   turn: boolean;
   roll: number;
+  palette: string;
 }

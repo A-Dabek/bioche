@@ -42,6 +42,11 @@ export class UsersStoreSetEnemy {
   constructor(public name: string) {}
 }
 
+export class UsersStoreSetPalette {
+  type = 'setPalette';
+  constructor(public name: string) {}
+}
+
 interface UsersState {
   user: User | null;
   _userHook: () => void;
@@ -205,6 +210,13 @@ export const UsersStore: StoreOptions<UsersState> = {
       userService.updateUser({
         name: context.state.user.name,
         hand: action.newHand
+      });
+    },
+    setPalette: function(context, action: UsersStoreSetPalette) {
+      if (!context.state.user) return null;
+      userService.updateUser({
+        name: context.state.user.name,
+        palette: action.name
       });
     }
   }

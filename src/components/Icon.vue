@@ -5,9 +5,9 @@
       viewBox="0 0 512 512"
       style="min-height: 10px; max-height: 200px; height: 50px; min-width: 10px; max-width: 200px; width: 50px;"
     >
-      <path d="M0 0h512v512H0z" fill="#fff" fill-opacity="1"></path>
+      <path d="M0 0h512v512H0z" v-bind:fill="background" fill-opacity="1"></path>
       <g transform="translate(0,0)" style="touch-action: none;">
-        <path v-bind:d="path" v-bind:fill="this.color" fill-opacity="1"></path>
+        <path v-bind:d="path" v-bind:fill="stroke" fill-opacity="1"></path>
       </g>
       <g
         v-if="count != null"
@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { Palette } from "@/interface/palette";
 export default Vue.extend({
   name: "icon",
   data: function() {
@@ -40,12 +41,24 @@ export default Vue.extend({
   },
   props: {
     name: { type: String, default: "" },
-    color: { type: String, default: "#000" },
+    strokeColor: { type: String },
+    backgroundColor: { type: String },
     count: { type: Number, default: null }
   },
   computed: {
     path: function() {
       return this.$store.getters.getIcon(this.name).path;
+    },
+    palette: function(): Palette {
+      return this.$store.getters.getPalette(
+        this.$store.state.users.user.palette
+      );
+    },
+    stroke: function() {
+      return `#${this.strokeColor || this.palette.primary}`;
+    },
+    background: function() {
+      return `#${this.backgroundColor || this.palette.secondary}`;
     }
   }
 });
