@@ -1,21 +1,20 @@
-import { StatelessPlayable } from '@/core/stateless-playable';
-import { KidneysOrgan } from '@/collection/organ/kidneys-organ';
-import { BrainOrgan } from '@/collection/organ/brain-organ';
-import { HeartOrgan } from '@/collection/organ/heart-organ';
-import { DefibrilateEffect } from '@/collection/effects/defibrilate.playable';
-import { PlayableState } from '@/interface/playable-state';
-import { StatefulPlayable } from '@/core/stateful-playable';
-import { Change } from '@/core/change/change';
-import { GlassShotPlayable } from '@/collection/effects/glass-shot.playable';
+import {KidneysOrgan} from '@/collection/organ/kidneys-organ';
+import {BrainOrgan} from '@/collection/organ/brain-organ';
+import {HeartOrgan} from '@/collection/organ/heart-organ';
+import {DefibrilateEffect} from '@/collection/effects/defibrilate.playable';
+import {GlassShotPlayable} from '@/collection/effects/glass-shot.playable';
+import {StatefulIcon} from '@/core/stateful-icon';
+import {PlayableIcon} from '@/core/playable-icon';
+import {RawState} from '@/interface/raw-state';
 
 export class GameService {
   private static instance: GameService;
-  private statefulLibrary: {
-    [k: string]: (state: PlayableState) => StatefulPlayable;
+  readonly statefulLibrary: {
+    [k: string]: (state: any) => StatefulIcon;
   };
-  private statelessLibrary: { [k: string]: () => StatelessPlayable };
+  readonly statelessLibrary: { [k: string]: () => PlayableIcon };
 
-  play(p: string, states: PlayableState[]): PlayableState[] {
+  play(p: string, states: any[]): any[] {
     const played = this.statelessLibrary[p]();
     return this.eventHandler(
       played,
@@ -23,13 +22,13 @@ export class GameService {
     );
   }
 
-  endTurn(state: PlayableState[]): PlayableState[] {
-    let newState: StatefulPlayable[] = state.map(i =>
+  endTurn(state: any[]): any[] {
+    let newState: StatefulIcon[] = state.map(i =>
       this.statefulLibrary[i.name](i)
     );
-    let events = [] as Change[];
-    newState.forEach(h => (events = events.concat(h.onTurnEnd())));
-    events.forEach(ev => (newState = ev.applyToTargetState(newState)));
+    // let events = [] as Change[];
+    // newState.forEach(h => h.onTurnEnd());
+    // events.forEach(ev => (newState = ev.applyToTargetState(newState)));
     return newState.map(i => i.getState());
   }
 
@@ -38,8 +37,18 @@ export class GameService {
     return keys[Math.floor(Math.random() * keys.length)];
   }
 
-  isWinConditionMet(state: PlayableState[]): boolean {
-    return state.every(i => i.durability <= 0);
+  isWinConditionMet(state: any[]): boolean {
+    return false;//state.every(i => i.durability <= 0);
+  }
+
+  startingState(): RawState[] {
+    const state = [
+      this.statefulLibrary.brain({}),
+      this.statefulLibrary.heart({}),
+      this.statefulLibrary.kidneys({}),
+    ];
+    state.forEach(s => s.onGameStart());
+    return state.map(i => i.getState())
   }
 
   static getInstance(): GameService {
@@ -48,14 +57,16 @@ export class GameService {
   }
 
   private eventHandler(
-    played: StatelessPlayable,
-    state: StatefulPlayable[]
-  ): PlayableState[] {
-    let events = played.dispatch();
-    let newState: StatefulPlayable[] = [...state];
-    state.forEach(h => (events = h.react(events)));
-    events.forEach(ev => (newState = ev.applyToTargetState(newState)));
-    return newState.map(i => i.getState());
+    played: PlayableIcon,
+    state: StatefulIcon[]
+  ): any[] {
+    played.applyEffect({
+      targetState: state,
+      hand: [],
+      state: [],
+      enemyState: []
+    });
+    return state.map(i => i.getState());
   }
 
   private constructor() {
@@ -64,9 +75,9 @@ export class GameService {
       glass_shot: () => new GlassShotPlayable()
     };
     this.statefulLibrary = {
-      heart: state => new HeartOrgan(state),
-      brain: state => new BrainOrgan(state),
-      kidneys: state => new KidneysOrgan(state)
+      heart: state => new HeartOrgan('heart', state),
+      brain: state => new BrainOrgan('brain', state),
+      kidneys: state => new KidneysOrgan('kidneys', state)
     };
     Object.keys(this.statefulLibrary)
       .concat(Object.keys(this.statelessLibrary))

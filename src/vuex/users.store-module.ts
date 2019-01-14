@@ -1,13 +1,10 @@
-import { StoreOptions } from 'vuex';
-import { User } from '@/interface/user';
-import { FirestoreService } from '@/service/firestore.service';
-import { GameService } from '@/service/game-service';
-import { NavigationMutationGoTo, NavigationEnum } from './navigation.store';
-import { FirestoreUserService } from '@/service/firestore-user.service';
-import { LobbyStoreEnterAction } from './lobby.store-module';
-import { HeartOrgan } from '@/collection/organ/heart-organ';
-import { BrainOrgan } from '@/collection/organ/brain-organ';
-import { KidneysOrgan } from '@/collection/organ/kidneys-organ';
+import {StoreOptions} from 'vuex';
+import {User} from '@/interface/user';
+import {FirestoreService} from '@/service/firestore.service';
+import {GameService} from '@/service/game-service';
+import {NavigationEnum, NavigationMutationGoTo} from './navigation.store';
+import {FirestoreUserService} from '@/service/firestore-user.service';
+import {LobbyStoreEnterAction} from './lobby.store-module';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
@@ -127,6 +124,7 @@ export const UsersStore: StoreOptions<UsersState> = {
     startGame: function(context, action: UsersStoreStartGameAction) {
       if (!context.state.user) return;
       context.dispatch(new UsersStoreSetEnemy(action.enemyName));
+
       userService.updateUser({
         name: context.state.user.name,
         playing: action.enemyName,
@@ -138,11 +136,7 @@ export const UsersStore: StoreOptions<UsersState> = {
         hand: Array(4)
           .fill(1)
           .map(() => GameService.getInstance().getRandomIcon()) as string[],
-        state: [
-          new BrainOrgan().getState(),
-          new HeartOrgan().getState(),
-          new KidneysOrgan().getState()
-        ]
+        state: GameService.getInstance().startingState()
       });
     },
     play: function(context, action: UsersStorePlayAction) {

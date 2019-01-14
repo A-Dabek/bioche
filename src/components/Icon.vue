@@ -3,7 +3,7 @@
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
-      style="min-height: 10px; max-height: 200px; height: 50px; min-width: 10px; max-width: 200px; width: 50px;"
+      v-bind:style="{'width': sideSize, 'height': sideSize}"
     >
       <path d="M0 0h512v512H0z" v-bind:fill="background" fill-opacity="1"></path>
       <g transform="translate(0,0)" style="touch-action: none;">
@@ -32,9 +32,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Palette } from "@/interface/palette";
-export default Vue.extend({
+  import Vue from "vue";
+  import {Palette} from "@/interface/palette";
+
+  export default Vue.extend({
   name: "icon",
   data: function() {
     return {};
@@ -43,7 +44,8 @@ export default Vue.extend({
     name: { type: String, default: "" },
     strokeColor: { type: String },
     backgroundColor: { type: String },
-    count: { type: Number, default: null }
+    count: { type: Number, default: null },
+    sideSize: {type: String, default: '50px'}
   },
   computed: {
     path: function() {

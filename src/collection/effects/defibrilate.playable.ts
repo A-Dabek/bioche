@@ -1,19 +1,14 @@
-import { StatelessPlayable } from '@/core/stateless-playable';
-import { NullTribe, Tribe } from '@/core/tribe';
-import { Change } from '@/core/change/change';
-import { ChangeActive, ChangeToggleActive } from '@/core/change/change-active';
-import { ChangeDurability } from '@/core/change/change-durability';
+import {GameState} from '@/interface/game-state';
+import {HeartOrgan} from '@/collection/organ/heart-organ';
+import {PlayableIcon} from '@/core/playable-icon';
+import {PassiveEffect} from '@/interface/passive-effect';
 
-export class DefibrilateEffect implements StatelessPlayable {
-  name: string;
-  tribe: Tribe;
+export class DefibrilateEffect implements PlayableIcon {
 
-  dispatch(): Change[] {
-    return [new ChangeToggleActive('heart'), new ChangeDurability('heart', -1)];
-  }
-
-  constructor() {
-    this.tribe = NullTribe;
-    this.name = 'defibrilate';
+  applyEffect(gameState: GameState) {
+    const heart = gameState.targetState.find(i => i instanceof HeartOrgan);
+    if (!heart) return;
+    const activeEffect = heart.effects.find((e: PassiveEffect) => e.name === 'active');
+    if (activeEffect) activeEffect.value = !activeEffect.value;
   }
 }

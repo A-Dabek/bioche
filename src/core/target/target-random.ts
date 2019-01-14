@@ -1,6 +1,6 @@
-import { Target } from './target';
-import { Playable, NullPlayable } from '../playable';
-import { StatefulPlayable } from '../stateful-playable';
+import {Target} from './target';
+import {NullPlayable, Playable} from '../playable';
+import {StatefulIcon} from '../stateful-playable';
 
 export class TargetRandom implements Target {
   private shuffle(array: any[]) {
@@ -15,7 +15,7 @@ export class TargetRandom implements Target {
     return array;
   }
 
-  pointTargets(playables: StatefulPlayable[]): StatefulPlayable[] {
+  pointTargets(playables: StatefulIcon[]): StatefulIcon[] {
     let _temp = this.shuffle(playables).slice(0, this.repeats);
     const extendBy = this.repeats - playables.length;
     if (extendBy > 0)

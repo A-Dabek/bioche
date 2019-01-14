@@ -1,8 +1,8 @@
-import { Change } from './change';
-import { StatefulPlayable } from '../stateful-playable';
+import {Change} from './change';
+import {StatefulIcon} from '../stateful-playable';
 
 export class ChangeDurability extends Change {
-  applyToTargetState(state: StatefulPlayable[]): StatefulPlayable[] {
+  applyToTargetState(state: StatefulIcon[]): StatefulIcon[] {
     const heart = state.find(i => i.name === this.name);
     if (heart) {
       heart.durability += this.value;
@@ -16,7 +16,7 @@ export class ChangeDurability extends Change {
 }
 
 export class ChangeSetDurability extends Change {
-  applyToTargetState(state: StatefulPlayable[]): StatefulPlayable[] {
+  applyToTargetState(state: StatefulIcon[]): StatefulIcon[] {
     const heart = state.find(i => i.name === this.name);
     if (heart) {
       heart.durability = this.value;

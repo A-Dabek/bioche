@@ -1,7 +1,5 @@
-import { Target } from './target';
-
-import { Playable, NullPlayable } from '../playable';
-import { StatefulPlayable } from '../stateful-playable';
+import {NullPlayable, Playable} from '../playable';
+import {StatefulIcon} from '../stateful-playable';
 
 // export class TargetFirst implements Target {
 // pointTargets(playables: StatefulPlayable[]): StatefulPlayable[] {

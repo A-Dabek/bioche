@@ -1,9 +1,9 @@
-import { PlayableState } from './playable-state';
+import {RawState} from '@/interface/raw-state';
 
 export interface User {
   name: string;
   hand: string[];
-  state: PlayableState[];
+  state: RawState[];
   lastPlay: string;
   challenging: string;
   playing: string;

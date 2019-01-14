@@ -1,14 +1,14 @@
-import { StatefulPlayable } from '../stateful-playable';
-import { StatelessPlayable } from '../stateless-playable';
+import {StatefulIcon} from '../stateful-playable';
+import {PlayableIcon} from '../stateless-playable';
 
 export class Change {
-  applyToTargetState(state: StatefulPlayable[]): StatefulPlayable[] {
+  applyToTargetState(state: StatefulIcon[]): StatefulIcon[] {
     return state;
   }
-  applyToHand(hand: StatelessPlayable[]): StatelessPlayable[] {
+  applyToHand(hand: PlayableIcon[]): PlayableIcon[] {
     return hand;
   }
-  applyToOtherState(state: StatefulPlayable[]): StatefulPlayable[] {
+  applyToOtherState(state: StatefulIcon[]): StatefulIcon[] {
     return state;
   }
 }

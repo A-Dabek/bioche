@@ -1,8 +1,8 @@
-import { Change } from './change';
-import { StatefulPlayable } from '../stateful-playable';
+import {Change} from './change';
+import {StatefulIcon} from '../stateful-playable';
 
 export class ChangeActive extends Change {
-  applyToTargetState(state: StatefulPlayable[]): StatefulPlayable[] {
+  applyToTargetState(state: StatefulIcon[]): StatefulIcon[] {
     const heart = state.find(i => i.name === this.name);
     if (heart) {
       heart.active = this.active;
@@ -16,7 +16,7 @@ export class ChangeActive extends Change {
 }
 
 export class ChangeToggleActive extends Change {
-  applyToTargetState(state: StatefulPlayable[]): StatefulPlayable[] {
+  applyToTargetState(state: StatefulIcon[]): StatefulIcon[] {
     const heart = state.find(i => i.name === this.name);
     if (heart) {
       heart.active = !heart.active;

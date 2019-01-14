@@ -1,19 +1,17 @@
-import { StatelessPlayable } from '@/core/stateless-playable';
-import { NullTribe, Tribe } from '@/core/tribe';
-import { Change } from '@/core/change/change';
-import { ChangeActive, ChangeToggleActive } from '@/core/change/change-active';
-import { ChangeDurability } from '@/core/change/change-durability';
+import {PlayableIcon} from '@/core/stateless-playable';
+import {GameState} from '@/interface/game-state';
+import {KidneysOrgan} from '@/collection/organ/kidneys-organ';
 
-export class GlassShotPlayable implements StatelessPlayable {
+export class GlassShotPlayable implements PlayableIcon {
   name: string;
-  tribe: Tribe;
 
-  dispatch(): Change[] {
-    return [new ChangeActive('kidneys', true)];
+  applyEffect(gameState: GameState): void {
+    const kidneys = gameState.targetState.find(i => i instanceof KidneysOrgan);
+    if (!kidneys) return;
+    (kidneys as KidneysOrgan).applySetActive(gameState, true);
   }
 
   constructor() {
-    this.tribe = NullTribe;
-    this.name = 'defibrilate';
+    this.name = 'glass_shot';
   }
 }

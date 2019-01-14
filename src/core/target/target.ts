@@ -1,6 +1,6 @@
-import { Playable } from '../playable';
-import { StatefulPlayable } from '../stateful-playable';
+import {Playable} from '../playable';
+import {StatefulIcon} from '../stateful-playable';
 
 export interface Target {
-  pointTargets(playables: Playable[]): StatefulPlayable[];
+  pointTargets(playables: Playable[]): StatefulIcon[];
 }
