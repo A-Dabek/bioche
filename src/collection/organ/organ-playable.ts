@@ -8,10 +8,12 @@ export abstract class OrganPlayable extends StatefulIcon {
   onTurnStart(gameState: GameState): void {
   }
 
-  onGameStart(): void {
-    this.effects = [
-      {name: 'health', value: 10},
-      {name: 'active', value: true}
-    ]
+  onGameStart(): this {
+    this.setState({
+      name: this.name,
+      health_normal: 10,
+      pause_button: false
+    });
+    return this;
   }
 }

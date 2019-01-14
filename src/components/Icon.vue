@@ -12,13 +12,13 @@
       <g
         v-if="count != null"
         font-family="Arial, Helvetica, sans-serif"
-        font-size="120"
+        font-size="250"
         font-style="normal"
         font-weight="bold"
-        text-anchor="middle"
+        text-anchor="start"
         class
         style="touch-action: none;"
-        transform="translate(433,101)"
+        transform="translate(0,480)"
       >
         <text stroke="#000" stroke-width="30">
           <tspan x="0" y="0">{{count}}</tspan>

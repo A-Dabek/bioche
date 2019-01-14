@@ -13,8 +13,8 @@
                 v-bind:sideSize="'80%'"
                 v-bind:name="icon.name"/>
           </div>
-          <div class="col-3 col-lg-3 p-0" v-for="(effect, index) of Object.keys(icon)" v-bind:key="index">
-            <icon v-bind:sideSize="'90%'" v-bind:name="effect" v-bind:count="icon[effect]"/>
+          <div class="col-3 col-lg-3 p-0" v-for="(effect, index) of listEffects(icon)" v-bind:key="index">
+            <icon v-bind:sideSize="'90%'" v-bind:name="effect" v-bind:count="Number(icon[effect]) || null"/>
           </div>
         </div>
         </div>
@@ -28,6 +28,7 @@
   import IconVue from "@/components/Icon.vue";
   import draggable from "vuedraggable";
   import {PlayableState} from "@/interface/playable-state";
+  import {RawState} from "../interface/raw-state";
 
   export default Vue.extend({
     name: "state",
@@ -52,6 +53,9 @@
     methods: {
       on_drop: function(event: any) {
         this.$emit("play", event.oldIndex);
+      },
+      listEffects: function (state: RawState) {
+        return Object.keys(state).filter(i => i !== 'name');
       }
     }
   });

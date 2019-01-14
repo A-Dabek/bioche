@@ -42,13 +42,11 @@ export class GameService {
   }
 
   startingState(): RawState[] {
-    const state = [
-      this.statefulLibrary.brain({}),
-      this.statefulLibrary.heart({}),
-      this.statefulLibrary.kidneys({}),
-    ];
-    state.forEach(s => s.onGameStart());
-    return state.map(i => i.getState())
+    return [
+      this.statefulLibrary.brain({}).onGameStart(),
+      this.statefulLibrary.heart({}).onGameStart(),
+      this.statefulLibrary.kidneys({}).onGameStart(),
+    ].map(i => i.getState())
   }
 
   static getInstance(): GameService {

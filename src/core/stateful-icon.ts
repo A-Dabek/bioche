@@ -6,7 +6,7 @@ import {RawState} from '@/interface/raw-state';
 export abstract class StatefulIcon implements IconState {
   abstract onTurnStart(gameState: GameState): void;
   abstract onTurnEnd(gameState: GameState): void;
-  abstract onGameStart(): void;
+  abstract onGameStart(): this;
 
   effects: PassiveEffect[];
 

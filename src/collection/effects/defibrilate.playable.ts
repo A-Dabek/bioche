@@ -8,7 +8,10 @@ export class DefibrilateEffect implements PlayableIcon {
   applyEffect(gameState: GameState) {
     const heart = gameState.targetState.find(i => i instanceof HeartOrgan);
     if (!heart) return;
-    const activeEffect = heart.effects.find((e: PassiveEffect) => e.name === 'active');
-    if (activeEffect) activeEffect.value = !activeEffect.value;
+    const activeEffect = heart.effects.find((e: PassiveEffect) => e.name === 'pause_button');
+    if (activeEffect) heart.effects = heart.effects.filter((e: PassiveEffect) => e.name !== 'pause_button');
+    else {
+      heart.effects = heart.effects.concat({name: 'pause_button', value: null});
+    }
   }
 }
