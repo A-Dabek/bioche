@@ -1,8 +1,8 @@
-import {IconState} from '@/interface/playable-state';
+import {StatefulIcon} from '@/core/stateful-icon';
 
 export interface GameState {
-    state: IconState[],
+    state: StatefulIcon[],
     hand: string[],
-    enemyState: IconState[]
-    targetState: IconState[]
+    enemyState: StatefulIcon[]
+    targetState: StatefulIcon[]
 }

@@ -14,14 +14,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Playable } from "@/core/playable";
-import DescriptionVue from "@/components/Description.vue";
-import { functions } from "firebase";
-import draggable from "vuedraggable";
-import IconVue from "@/components/Icon.vue";
-import { UsersStorePermuteHandAction } from "@/vuex/users.store-module";
-export default Vue.extend({
+  import Vue from "vue";
+  import DescriptionVue from "@/components/Description.vue";
+  import draggable from "vuedraggable";
+  import IconVue from "@/components/Icon.vue";
+  import {UsersStorePermuteHandAction} from "@/vuex/users.store-module";
+
+  export default Vue.extend({
   name: "hand",
   data: function() {
     return {

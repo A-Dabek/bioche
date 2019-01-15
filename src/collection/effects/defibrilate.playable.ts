@@ -1,17 +1,14 @@
 import {GameState} from '@/interface/game-state';
 import {HeartOrgan} from '@/collection/organ/heart-organ';
 import {PlayableIcon} from '@/core/playable-icon';
-import {PassiveEffect} from '@/interface/passive-effect';
+import {IconState} from '@/interface/icon-state';
 
 export class DefibrilateEffect implements PlayableIcon {
 
   applyEffect(gameState: GameState) {
-    const heart = gameState.targetState.find(i => i instanceof HeartOrgan);
-    if (!heart) return;
-    const activeEffect = heart.effects.find((e: PassiveEffect) => e.name === 'pause_button');
-    if (activeEffect) heart.effects = heart.effects.filter((e: PassiveEffect) => e.name !== 'pause_button');
-    else {
-      heart.effects = heart.effects.concat({name: 'pause_button', value: null});
-    }
+    const heart: IconState | undefined = gameState.targetState.find(i => i instanceof HeartOrgan);
+    if (!heart || !(heart instanceof HeartOrgan)) return;
+    (heart as HeartOrgan).onActiveChange(gameState, !heart.isActive());
+    (heart as HeartOrgan).onHealthChange(gameState, heart.getHealth() - 1);
   }
 }

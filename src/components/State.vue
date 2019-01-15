@@ -14,7 +14,7 @@
                 v-bind:name="icon.name"/>
           </div>
           <div class="col-3 col-lg-3 p-0" v-for="(effect, index) of listEffects(icon)" v-bind:key="index">
-            <icon v-bind:sideSize="'90%'" v-bind:name="effect" v-bind:count="Number(icon[effect]) || null"/>
+            <icon v-bind:sideSize="'90%'" v-bind:name="effect" v-bind:text="String(icon[effect])"/>
           </div>
         </div>
         </div>
@@ -27,7 +27,6 @@
   import Vue from "vue";
   import IconVue from "@/components/Icon.vue";
   import draggable from "vuedraggable";
-  import {PlayableState} from "@/interface/playable-state";
   import {RawState} from "../interface/raw-state";
 
   export default Vue.extend({
@@ -38,16 +37,16 @@
     },
     props: {
       state: {
-        type: Array as () => Array<PlayableState>,
-        default: () => [] as PlayableState[]
+        type: Array as () => Array<RawState>,
+        default: () => [] as RawState[]
       }
     },
     computed: {
       icons: {
-        get(): PlayableState[] {
+        get(): RawState[] {
           return this.state;
         },
-        set(v: PlayableState[]) {}
+        set(v: RawState[]) {}
       }
     },
     methods: {

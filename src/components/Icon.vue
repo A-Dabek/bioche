@@ -10,7 +10,7 @@
         <path v-bind:d="path" v-bind:fill="stroke" fill-opacity="1"></path>
       </g>
       <g
-        v-if="count != null"
+        v-if="text != null"
         font-family="Arial, Helvetica, sans-serif"
         font-size="250"
         font-style="normal"
@@ -21,10 +21,10 @@
         transform="translate(0,480)"
       >
         <text stroke="#000" stroke-width="30">
-          <tspan x="0" y="0">{{count}}</tspan>
+          <tspan x="0" y="0">{{text}}</tspan>
         </text>
         <text fill="#fff">
-          <tspan x="0" y="0">{{count}}</tspan>
+          <tspan x="0" y="0">{{text}}</tspan>
         </text>
       </g>
     </svg>
@@ -44,7 +44,7 @@
     name: { type: String, default: "" },
     strokeColor: { type: String },
     backgroundColor: { type: String },
-    count: { type: Number, default: null },
+    text: {type: String},
     sideSize: {type: String, default: '50px'}
   },
   computed: {
