@@ -15,13 +15,23 @@ export class KidneysOrgan extends OrganPlayable {
 
   setState(obj: RawState): void {
     super.setState(obj);
-    this._water = obj['droplets'];
+    this._water = obj.values['water'];
   }
 
-  getState(): RawState {
+  getPresentation(): {key: string, value: string}[] {
+    return super.getPresentation().concat(
+      {key: 'droplets', value: String(this.getWater())}
+    );
+  }
+
+  getValues(): { [p: string]: any } {
     return {
-      ...super.getState(),
-      droplets: this.getWater()
+      ...super.getValues(),
+      water: this.getWater()
     };
+  }
+
+  constructor(state?: RawState) {
+    super('kidneys', state);
   }
 }

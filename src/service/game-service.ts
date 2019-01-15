@@ -10,7 +10,7 @@ import {RawState} from '@/interface/raw-state';
 export class GameService {
   private static instance: GameService;
   readonly statefulLibrary: {
-    [k: string]: (state: any) => StatefulIcon;
+    [k: string]: (state?: RawState) => StatefulIcon;
   };
   readonly statelessLibrary: { [k: string]: () => PlayableIcon };
 
@@ -43,9 +43,9 @@ export class GameService {
 
   startingState(): RawState[] {
     return [
-      this.statefulLibrary.brain({}).onGameStart(),
-      this.statefulLibrary.heart({}).onGameStart(),
-      this.statefulLibrary.kidneys({}).onGameStart(),
+      this.statefulLibrary.brain(),
+      this.statefulLibrary.heart(),
+      this.statefulLibrary.kidneys(),
     ].map(i => i.getState())
   }
 
@@ -73,9 +73,9 @@ export class GameService {
       glass_shot: () => new GlassShotPlayable()
     };
     this.statefulLibrary = {
-      heart: state => new HeartOrgan('heart', state),
-      brain: state => new BrainOrgan('brain', state),
-      kidneys: state => new KidneysOrgan('kidneys', state)
+      heart: state => new HeartOrgan(state),
+      brain: state => new BrainOrgan(state),
+      kidneys: state => new KidneysOrgan(state)
     };
     Object.keys(this.statefulLibrary)
       .concat(Object.keys(this.statelessLibrary))

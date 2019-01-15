@@ -4,7 +4,6 @@ import {FirestoreService} from '@/service/firestore.service';
 import {GameService} from '@/service/game-service';
 import {NavigationEnum, NavigationMutationGoTo} from './navigation.store';
 import {FirestoreUserService} from '@/service/firestore-user.service';
-import {LobbyStoreEnterAction} from './lobby.store-module';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
@@ -90,9 +89,11 @@ export const UsersStore: StoreOptions<UsersState> = {
             userService.setUser({ name: action.name, challenging: '' });
           } else {
             if (!context.state.user) {
-              context.dispatch(new LobbyStoreEnterAction(action.name));
+              context.dispatch(new UsersStoreSetEnemy(user.playing));
+              // context.dispatch(new LobbyStoreEnterAction(action.name));
+              // context.dispatch(new (action.name));
             }
-            if (
+            else if (
               context.state.user &&
               !context.state.user.winner &&
               !!user.winner
@@ -101,7 +102,7 @@ export const UsersStore: StoreOptions<UsersState> = {
               context.state._enemyHook();
               context.commit('setEnemy', null);
             }
-            context.commit('setUser', user);
+            context.commit('setUser', {...user, turn: true});
           }
         }
       );

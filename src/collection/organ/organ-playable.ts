@@ -29,27 +29,27 @@ export abstract class OrganPlayable extends StatefulIcon {
   }
 
   setState(obj: RawState): void {
-    this._health = obj['health_normal'];
-    this._active = obj['pause_button'];
+    this._health = obj.values['health'];
+    this._active = obj.values['active'];
   }
 
-  getState(): RawState {
-    const active = this.isActive() ? {pause_button: ''} : {};
+  getValues(): { [p: string]: any } {
     return {
-      ...super.getState(),
-      health_normal: this.getHealth(),
-      ...active
+      ...super.getValues(),
+      health: this.getHealth(),
+      active: this.isActive()
     };
   }
 
-  onGameStart(): this {
+  getPresentation(): {key: string, value: string}[] {
+    const present = [{key: 'health_normal', value: String(this.getHealth())}];
+    if (this.isActive()) return present;
+    return present.concat({key: 'pause_button', value: ''});
+  }
+
+  onGameStart(): RawState {
     this._health = 10;
     this._active = true;
-    this.setState({
-      name: this.name,
-      health_normal: 10,
-      pause_button: false
-    });
-    return this;
+    return this.getState();
   }
 }

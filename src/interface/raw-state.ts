@@ -1,4 +1,5 @@
 export interface RawState {
   name: string;
-  [k: string]: any;
+  values: {[k: string]: any};
+  present: {key: string, value: string}[];
 }

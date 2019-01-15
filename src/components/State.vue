@@ -13,8 +13,8 @@
                 v-bind:sideSize="'80%'"
                 v-bind:name="icon.name"/>
           </div>
-          <div class="col-3 col-lg-3 p-0" v-for="(effect, index) of listEffects(icon)" v-bind:key="index">
-            <icon v-bind:sideSize="'90%'" v-bind:name="effect" v-bind:text="String(icon[effect])"/>
+          <div class="col-3 col-lg-3 p-0" v-for="(effect, index) of icon.present" v-bind:key="index">
+            <icon v-bind:sideSize="'90%'" v-bind:name="effect.key" v-bind:text="effect.value"/>
           </div>
         </div>
         </div>
