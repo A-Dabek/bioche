@@ -1,7 +1,7 @@
-import { Icon } from '@/interface/icon';
+import {FirebaseIcon} from '@/interface/icon';
 
 export class FirestoreIconService {
-  startLibrary(): Promise<{ [k: string]: Icon }> {
+  startLibrary(): Promise<{ [k: string]: FirebaseIcon }> {
     return this.db
       .collection('library')
       .get()

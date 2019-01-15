@@ -5,12 +5,12 @@ import {DefibrilateEffect} from '@/collection/effects/defibrilate.playable';
 import {GlassShotPlayable} from '@/collection/effects/glass-shot.playable';
 import {StatefulIcon} from '@/core/stateful-icon';
 import {PlayableIcon} from '@/core/playable-icon';
-import {RawState} from '@/interface/raw-state';
+import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
 
 export class GameService {
   private static instance: GameService;
   readonly statefulLibrary: {
-    [k: string]: (state?: RawState) => StatefulIcon;
+    [k: string]: (state?: FirebaseStatefulIcon) => StatefulIcon;
   };
   readonly statelessLibrary: { [k: string]: () => PlayableIcon };
 
@@ -41,7 +41,7 @@ export class GameService {
     return false;//state.every(i => i.durability <= 0);
   }
 
-  startingState(): RawState[] {
+  startingState(): FirebaseStatefulIcon[] {
     return [
       this.statefulLibrary.brain(),
       this.statefulLibrary.heart(),

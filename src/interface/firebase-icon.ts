@@ -1,4 +1,4 @@
-export interface Icon {
+export interface FirebaseIcon {
   path: string;
   description: string;
   header: string;

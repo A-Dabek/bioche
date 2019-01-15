@@ -1,9 +1,9 @@
-import { StoreOptions } from 'vuex';
-import { User } from '@/interface/user';
-import { FirestoreUserService } from '@/service/firestore-user.service';
-import { FirestoreService } from '@/service/firestore.service';
-import { NavigationMutationGoTo, NavigationEnum } from './navigation.store';
-import { UsersStoreStartGameAction } from './users.store-module';
+import {StoreOptions} from 'vuex';
+import {FirestoreUserService} from '@/service/firestore-user.service';
+import {FirestoreService} from '@/service/firestore.service';
+import {NavigationEnum, NavigationMutationGoTo} from './navigation.store';
+import {UsersStoreStartGameAction} from './users.store-module';
+import {FirebaseUser} from '@/interface/firebase-user';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
@@ -27,8 +27,8 @@ class LobbyStoreHooksMutation {
 }
 
 interface LobbyState {
-  availableUsers: User[];
-  challengingMeUsers: User[];
+  availableUsers: FirebaseUser[];
+  challengingMeUsers: FirebaseUser[];
   _availableSnapshotHook: () => void;
   _challengingSnapshotHook: () => void;
   _challengerHook: () => void;
@@ -50,10 +50,10 @@ export const LobbyStore: StoreOptions<LobbyState> = {
     setChallengerHook: function(state, hook: () => void) {
       state._challengerHook = hook;
     },
-    setAvailableUsers: function(state, users: User[]) {
+    setAvailableUsers: function(state, users: FirebaseUser[]) {
       state.availableUsers = users;
     },
-    setChallengingUsers: function(state, users: User[]) {
+    setChallengingUsers: function(state, users: FirebaseUser[]) {
       state.challengingMeUsers = users;
     }
   },

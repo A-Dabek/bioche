@@ -1,37 +1,32 @@
 import {OrganPlayable} from './organ-playable';
-import {GameState} from '@/interface/game-state';
-import {RawState} from '@/interface/raw-state';
+import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
+import {BasicStatefulIconSubState, StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
 
 export class KidneysOrgan extends OrganPlayable {
-  private _water?: number;
 
-  getWater(): number {
-    return this._water || 0;
-  }
+  readonly water: StatefulIconSubState<number>;
 
-  onWaterChange(gameState: GameState, newValue: number): void {
-    this._water = newValue;
-  }
-
-  setState(obj: RawState): void {
-    super.setState(obj);
-    this._water = obj.values['water'];
-  }
-
-  getPresentation(): {key: string, value: string}[] {
-    return super.getPresentation().concat(
-      {key: 'droplets', value: String(this.getWater())}
-    );
+  getSubStates() {
+    return [
+      ...super.getSubStates(),
+      this.water
+    ];
   }
 
   getValues(): { [p: string]: any } {
     return {
       ...super.getValues(),
-      water: this.getWater()
+      water: this.water.getValue()
     };
   }
 
-  constructor(state?: RawState) {
+  constructor(state?: FirebaseStatefulIcon) {
     super('kidneys', state);
+    if (state) {
+      this.water = new BasicStatefulIconSubState<number>('droplets', state.values['water']);
+    }
+    else {
+      this.water = new BasicStatefulIconSubState<number>('droplets', 10);
+    }
   }
 }

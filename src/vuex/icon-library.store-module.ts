@@ -1,9 +1,9 @@
-import { Icon } from '@/interface/icon';
-import { StoreOptions } from 'vuex';
-import { FirestoreService } from '@/service/firestore.service';
+import {StoreOptions} from 'vuex';
+import {FirestoreService} from '@/service/firestore.service';
+import {FirebaseIcon} from '@/interface/firebase-icon';
 
 interface IconLibraryState {
-  library: { [k: string]: Icon };
+  library: { [k: string]: FirebaseIcon };
 }
 
 export class IconLibraryInitAction {
@@ -23,7 +23,7 @@ export const IconLibraryStore: StoreOptions<IconLibraryState> = {
     }
   },
   mutations: {
-    initLibrary: function(state, library: { [k: string]: Icon }) {
+    initLibrary: function(state, library: { [k: string]: FirebaseIcon }) {
       state.library = {
         help: {
           header: '???',

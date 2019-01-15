@@ -1,9 +1,9 @@
-import {RawState} from '@/interface/raw-state';
+import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
 
-export interface User {
+export interface FirebaseUser {
   name: string;
   hand: string[];
-  state: RawState[];
+  state: FirebaseStatefulIcon[];
   lastPlay: string;
   challenging: string;
   playing: string;

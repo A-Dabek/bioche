@@ -1,15 +1,15 @@
 import {GameState} from '@/interface/game-state';
-import {RawState} from '@/interface/raw-state';
+import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
+import {StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
+
 
 export abstract class StatefulIcon {
   readonly name: string;
 
-  protected abstract onGameStart(): RawState;
   abstract onTurnStart(gameState: GameState): void;
   abstract onTurnEnd(gameState: GameState): void;
-  abstract setState(obj: RawState): void;
 
-  getPropertyKeys(keys: (keyof this)[]) {
+  getSubStates(): StatefulIconSubState<any>[] {
     return [];
   }
 
@@ -18,10 +18,15 @@ export abstract class StatefulIcon {
   }
 
   getPresentation(): {key: string, value: string}[] {
-    return [];
+    return this.getSubStates().map(k => {
+      return {
+        key: k.name,
+        value: k.presentationValue()
+      };
+    });
   }
 
-  getState(): RawState {
+  getState(): FirebaseStatefulIcon {
     return {
       name: this.name,
       values: this.getValues(),
@@ -29,9 +34,7 @@ export abstract class StatefulIcon {
     }
   };
 
-  constructor(name: string, state?: RawState) {
+  constructor(name: string) {
     this.name = name;
-    if (state) this.setState(state);
-    else this.setState(this.onGameStart());
   }
 }

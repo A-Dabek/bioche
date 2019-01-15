@@ -1,26 +1,25 @@
-import { User } from '@/interface/user';
-import { __makeTemplateObject } from 'tslib';
+import {FirebaseUser} from '@/interface/firebase-user';
 
 export class FirestoreUserService {
   private snapshotToUser(
     snapshot: firebase.firestore.DocumentSnapshot
-  ): User | null {
+  ): FirebaseUser | null {
     const user = snapshot.data();
-    if (user) return { name: snapshot.id, ...user } as User;
+    if (user) return { name: snapshot.id, ...user } as FirebaseUser;
     else return null;
   }
 
   private snapshotToUserArray(
     snapshot: firebase.firestore.QuerySnapshot
-  ): User[] {
-    const temp = [] as User[];
-    snapshot.forEach(q => temp.push({ ...(q.data() as User), name: q.id }));
+  ): FirebaseUser[] {
+    const temp = [] as FirebaseUser[];
+    snapshot.forEach(q => temp.push({ ...(q.data() as FirebaseUser), name: q.id }));
     return temp;
   }
 
   listenToUserChanges(
     userName: string,
-    onSnapshot: (users: User | null) => void
+    onSnapshot: (users: FirebaseUser | null) => void
   ): () => void {
     return this.db
       .collection('users')
@@ -28,21 +27,21 @@ export class FirestoreUserService {
       .onSnapshot(query => onSnapshot(this.snapshotToUser(query)));
   }
 
-  setUser(user: Partial<User> & { name: string }): Promise<void> {
+  setUser(user: Partial<FirebaseUser> & { name: string }): Promise<void> {
     return this.db
       .collection('users')
       .doc(user.name)
       .set(user);
   }
 
-  updateUser(user: Partial<User> & { name: string }): Promise<void> {
+  updateUser(user: Partial<FirebaseUser> & { name: string }): Promise<void> {
     return this.db
       .collection('users')
       .doc(user.name)
       .update(user);
   }
 
-  getUser(name: string): Promise<User | null> {
+  getUser(name: string): Promise<FirebaseUser | null> {
     return this.db
       .collection('users')
       .doc(name)
@@ -52,7 +51,7 @@ export class FirestoreUserService {
 
   getChallengingMeUsers(
     userName: string,
-    callback: (user: User[]) => void
+    callback: (user: FirebaseUser[]) => void
   ): () => void {
     return this.db
       .collection('users')
@@ -60,7 +59,7 @@ export class FirestoreUserService {
       .onSnapshot(snapshot => callback(this.snapshotToUserArray(snapshot)));
   }
 
-  getAvailableUsers(callback: (user: User[]) => void): () => void {
+  getAvailableUsers(callback: (user: FirebaseUser[]) => void): () => void {
     return this.db
       .collection('users')
       .where('challenging', '==', '')

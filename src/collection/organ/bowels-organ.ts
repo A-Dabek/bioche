@@ -1,8 +1,8 @@
 import {OrganPlayable} from './organ-playable';
-import {RawState} from '@/interface/raw-state';
+import {FirebaseStatefulIcon} from '@/interface/raw-state';
 
 export class BowelsOrgan extends OrganPlayable {
-  constructor(state?: RawState) {
+  constructor(state?: FirebaseStatefulIcon) {
     super('bowels', state);
   }
 }

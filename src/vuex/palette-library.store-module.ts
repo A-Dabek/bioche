@@ -1,10 +1,10 @@
-import { StoreOptions } from 'vuex';
-import { FirestoreService } from '@/service/firestore.service';
-import { Palette } from '@/interface/palette';
+import {StoreOptions} from 'vuex';
+import {FirestoreService} from '@/service/firestore.service';
+import {FirebasePalette} from '@/interface/firebase-palette';
 
 interface PaletteLibraryState {
-  library: { [k: string]: Palette };
-  default: Palette;
+  library: { [k: string]: FirebasePalette };
+  default: FirebasePalette;
 }
 
 export class PaletteLibraryInitAction {
@@ -30,7 +30,7 @@ export const PaletteLibraryStore: StoreOptions<PaletteLibraryState> = {
     }
   },
   mutations: {
-    initPaletteLibrary: function(state, library: { [k: string]: Palette }) {
+    initPaletteLibrary: function(state, library: { [k: string]: FirebasePalette }) {
       state.library = library;
     }
   },

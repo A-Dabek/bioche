@@ -1,25 +1,21 @@
 import {StatefulIcon} from '@/core/stateful-icon';
 import {GameState} from '@/interface/game-state';
-import {RawState} from '@/interface/raw-state';
+import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
+import {
+  BasicStatefulIconSubState,
+  BooleanStatefulIconSubState,
+  StatefulIconSubState
+} from '@/interface/stateful-icon-sub-state';
 
 export abstract class OrganPlayable extends StatefulIcon {
-  private _health?: number;
-  private _active?: boolean;
+  readonly health: StatefulIconSubState<number>;
+  readonly stopped: StatefulIconSubState<boolean>;
 
-  getHealth(): number {
-    return this._health || 0;
-  }
-
-  isActive(): boolean {
-    return this._active || false;
-  }
-
-  onHealthChange(gameState: GameState, newValue: number): void {
-
-  }
-
-  onActiveChange(gameState: GameState, newValue: boolean): void {
-    this._active = newValue;
+  getSubStates() {
+    return [
+      ...super.getSubStates(),
+      this.health
+    ];
   }
 
   onTurnEnd(gameState: GameState): void {
@@ -28,28 +24,31 @@ export abstract class OrganPlayable extends StatefulIcon {
   onTurnStart(gameState: GameState): void {
   }
 
-  setState(obj: RawState): void {
-    this._health = obj.values['health'];
-    this._active = obj.values['active'];
-  }
-
   getValues(): { [p: string]: any } {
     return {
       ...super.getValues(),
-      health: this.getHealth(),
-      active: this.isActive()
+      health: this.health.getValue(),
+      stopped: this.stopped.getValue()
     };
   }
 
   getPresentation(): {key: string, value: string}[] {
-    const present = [{key: 'health_normal', value: String(this.getHealth())}];
-    if (this.isActive()) return present;
-    return present.concat({key: 'pause_button', value: ''});
+    const present = super.getPresentation();
+    if (this.stopped.getValue()) return present.concat({key: this.stopped.name, value: ''});
+    else {
+      return present;
+    }
   }
 
-  onGameStart(): RawState {
-    this._health = 10;
-    this._active = true;
-    return this.getState();
+  constructor(name: string, state?: FirebaseStatefulIcon) {
+    super(name);
+    if (state) {
+      this.health = new BasicStatefulIconSubState<number>('health_normal', state.values['health']);
+      this.stopped = new BooleanStatefulIconSubState('pause_button', state.values['stopped']);
+    }
+    else {
+      this.health = new BasicStatefulIconSubState<number>('health_normal', 10);
+      this.stopped = new BooleanStatefulIconSubState('pause_button', false);
+    }
   }
 }

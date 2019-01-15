@@ -8,7 +8,7 @@ export class GlassShotPlayable implements PlayableIcon {
   applyEffect(gameState: GameState): void {
     const kidneys = gameState.targetState.find(i => i instanceof KidneysOrgan);
     if (!kidneys) return;
-    (kidneys as KidneysOrgan).onWaterChange(gameState, (kidneys as KidneysOrgan).getWater() + 5);
+    (kidneys as KidneysOrgan).water.changeValue(gameState, (kidneys as KidneysOrgan).water.getValue() + 5);
   }
 
   constructor() {

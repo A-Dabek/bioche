@@ -1,9 +1,9 @@
 import {StoreOptions} from 'vuex';
-import {User} from '@/interface/user';
 import {FirestoreService} from '@/service/firestore.service';
 import {GameService} from '@/service/game-service';
 import {NavigationEnum, NavigationMutationGoTo} from './navigation.store';
 import {FirestoreUserService} from '@/service/firestore-user.service';
+import {FirebaseUser} from '@/interface/firebase-user';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
@@ -44,9 +44,9 @@ export class UsersStoreSetPalette {
 }
 
 interface UsersState {
-  user: User | null;
+  user: FirebaseUser | null;
   _userHook: () => void;
-  enemy: User | null;
+  enemy: FirebaseUser | null;
   _enemyHook: () => void;
 }
 
@@ -66,13 +66,13 @@ export const UsersStore: StoreOptions<UsersState> = {
     }
   },
   mutations: {
-    setUser: function(state, user: User) {
+    setUser: function(state, user: FirebaseUser) {
       state.user = user;
     },
     setUserHook: function(state, hook: () => void) {
       state._userHook = hook;
     },
-    setEnemy: function(state, user: User) {
+    setEnemy: function(state, user: FirebaseUser) {
       state.enemy = user;
     },
     setEnemyHook: function(state, hook: () => void) {
@@ -84,14 +84,13 @@ export const UsersStore: StoreOptions<UsersState> = {
       context.state._userHook();
       const hook = userService.listenToUserChanges(
         action.name,
-        (user: null | User) => {
+        (user: null | FirebaseUser) => {
           if (!user) {
             userService.setUser({ name: action.name, challenging: '' });
           } else {
             if (!context.state.user) {
               context.dispatch(new UsersStoreSetEnemy(user.playing));
               // context.dispatch(new LobbyStoreEnterAction(action.name));
-              // context.dispatch(new (action.name));
             }
             else if (
               context.state.user &&
@@ -112,7 +111,7 @@ export const UsersStore: StoreOptions<UsersState> = {
       context.state._enemyHook();
       const hook = userService.listenToUserChanges(
         action.name,
-        (user: null | User) => {
+        (user: null | FirebaseUser) => {
           if (!user) return;
           if (!context.state.enemy) {
             context.commit(new NavigationMutationGoTo(NavigationEnum.game));

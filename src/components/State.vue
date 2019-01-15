@@ -27,7 +27,7 @@
   import Vue from "vue";
   import IconVue from "@/components/Icon.vue";
   import draggable from "vuedraggable";
-  import {RawState} from "../interface/raw-state";
+  import {FirebaseStatefulIcon} from "../interface/raw-state";
 
   export default Vue.extend({
     name: "state",
@@ -37,24 +37,21 @@
     },
     props: {
       state: {
-        type: Array as () => Array<RawState>,
-        default: () => [] as RawState[]
+        type: Array as () => Array<FirebaseStatefulIcon>,
+        default: () => [] as FirebaseStatefulIcon[]
       }
     },
     computed: {
       icons: {
-        get(): RawState[] {
+        get(): FirebaseStatefulIcon[] {
           return this.state;
         },
-        set(v: RawState[]) {}
+        set(v: FirebaseStatefulIcon[]) {}
       }
     },
     methods: {
       on_drop: function(event: any) {
         this.$emit("play", event.oldIndex);
-      },
-      listEffects: function (state: RawState) {
-        return Object.keys(state).filter(i => i !== 'name');
       }
     }
   });
