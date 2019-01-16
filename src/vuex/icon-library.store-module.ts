@@ -2,8 +2,22 @@ import {StoreOptions} from 'vuex';
 import {FirestoreService} from '@/service/firestore.service';
 import {FirebaseIcon} from '@/interface/firebase-icon';
 
+export class IconStoreAction_ShowDescription {
+  type = 'showDescription';
+  constructor(public name: string) {
+  }
+}
+
+export class IconStoreAction_HideDescription {
+  type = 'hideDescription';
+  constructor() {
+  }
+}
+
 interface IconLibraryState {
   library: { [k: string]: FirebaseIcon };
+  showDescription: boolean;
+  descriptionOf: string;
 }
 
 export class IconLibraryInitAction {
@@ -15,7 +29,9 @@ export class IconLibraryInitAction {
 
 export const IconLibraryStore: StoreOptions<IconLibraryState> = {
   state: {
-    library: {}
+    library: {},
+    showDescription: false,
+    descriptionOf: ''
   },
   getters: {
     getIcon: (state: IconLibraryState) => (name: string) => {
@@ -33,6 +49,13 @@ export const IconLibraryStore: StoreOptions<IconLibraryState> = {
         },
         ...library
       };
+    },
+    showDescription: function (state, action: IconStoreAction_ShowDescription) {
+      state.showDescription = true;
+      state.descriptionOf = action.name;
+    },
+    hideDescription: function (state) {
+      state.showDescription = false;
     }
   },
   actions: {

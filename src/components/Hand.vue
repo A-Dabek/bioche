@@ -1,7 +1,7 @@
 <template>
   <div class="root">
-    <div class="description ml-3" v-if="showDesc">
-      <description v-bind:icon_name="descriptionOf" v-on:dismiss="hide_desc"/>
+    <div class="description ml-3" v-if="showDescription">
+      <description/>
     </div>
     <div class="hand" v-else>
       <draggable v-model="hand" v-bind:options="draggableOptions">
@@ -19,15 +19,10 @@
   import draggable from "vuedraggable";
   import IconVue from "@/components/Icon.vue";
   import {UsersStorePermuteHandAction} from "@/vuex/users.store-module";
+  import {IconStoreAction_ShowDescription} from "../vuex/icon-library.store-module";
 
   export default Vue.extend({
   name: "hand",
-  data: function() {
-    return {
-      descriptionOf: "",
-      showDesc: false
-    };
-  },
   components: {
     icon: IconVue,
     description: DescriptionVue,
@@ -50,15 +45,14 @@
         dragClass: "drag",
         disabled: !this.$store.getters.myTurn
       };
-    }
+    },
+    showDescription: function(): boolean {
+      return this.$store.state.library.showDescription
+    },
   },
   methods: {
     show_desc: function(name: string) {
-      this.showDesc = true;
-      this.descriptionOf = name;
-    },
-    hide_desc: function() {
-      this.showDesc = false;
+      this.$store.commit(new IconStoreAction_ShowDescription(name));
     }
   }
 });

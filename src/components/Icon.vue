@@ -41,9 +41,20 @@
     return {};
   },
   props: {
-    name: { type: String, default: "" },
-    strokeColor: { type: String },
-    backgroundColor: { type: String },
+    name: {type: String, default: ""},
+    strokeColor: {
+      type: String,
+      validator: function (value) {
+        return /^[0-9a-fA-F]+$/.test(value);
+      }
+    },
+    backgroundColor: {
+      type: String,
+
+      validator: function (value) {
+        return /^[0-9a-fA-F]+$/.test(value);
+      }
+    },
     text: {type: String},
     sideSize: {type: String, default: '50px'}
   },

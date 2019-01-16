@@ -2,7 +2,7 @@
   <div class="description row" v-on:click="dismiss">
     <div class="col-12">
       <div>
-        <icon v-bind:name="icon_name"></icon>
+        <icon v-bind:name="iconName"></icon>
         <label class="desc-label">{{icon.header}}</label>
       </div>
       <div>{{icon.description}}</div>
@@ -11,26 +11,27 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { functions } from "firebase";
-import IconVue from "@/components/Icon.vue";
-import { Icon } from "@/interface/icon";
-export default Vue.extend({
+  import Vue from "vue";
+  import IconVue from "@/components/Icon.vue";
+  import {Icon} from "@/interface/icon";
+  import {IconStoreAction_HideDescription} from "../vuex/icon-library.store-module";
+
+  export default Vue.extend({
   name: "description",
   components: {
     icon: IconVue
   },
-  props: {
-    icon_name: { type: String, default: "" }
-  },
   computed: {
+    iconName: function(): string {
+      return this.$store.state.library.descriptionOf;
+    },
     icon: function(): Icon {
-      return this.$store.getters.getIcon(this.icon_name);
+      return this.$store.getters.getIcon(this.iconName);
     }
   },
   methods: {
     dismiss: function() {
-      this.$emit("dismiss");
+      this.$store.commit(new IconStoreAction_HideDescription());
     }
   }
 });

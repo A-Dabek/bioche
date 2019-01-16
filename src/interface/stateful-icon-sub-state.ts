@@ -4,11 +4,13 @@ export interface StatefulIconSubState<T> {
   readonly name: string;
   getValue(): T;
   presentationValue(): string;
+  className: string;
   changeValue(gameState: GameState, newValue: T): void;
 }
 
 export class BasicStatefulIconSubState<T extends number | string> implements  StatefulIconSubState<T> {
 
+  readonly className = '';
   private value: T;
 
   getValue(): T {
@@ -32,6 +34,7 @@ export class BasicStatefulIconSubState<T extends number | string> implements  St
 export class BooleanStatefulIconSubState implements  StatefulIconSubState<boolean> {
 
   private value: boolean;
+  readonly className = '';
 
   getValue(): boolean {
     return this.value;
@@ -49,3 +52,4 @@ export class BooleanStatefulIconSubState implements  StatefulIconSubState<boolea
     this.value = startValue;
   }
 }
+

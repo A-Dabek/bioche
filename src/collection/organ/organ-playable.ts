@@ -32,9 +32,9 @@ export abstract class OrganPlayable extends StatefulIcon {
     };
   }
 
-  getPresentation(): {key: string, value: string}[] {
+  getPresentation(): {key: string, value: string, className: string}[] {
     const present = super.getPresentation();
-    if (this.stopped.getValue()) return present.concat({key: this.stopped.name, value: ''});
+    if (this.stopped.getValue()) return present.concat({key: this.stopped.name, value: '', className: 'stop-beating'});
     else {
       return present;
     }

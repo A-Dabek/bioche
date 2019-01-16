@@ -17,11 +17,12 @@ export abstract class StatefulIcon {
     return {};
   }
 
-  getPresentation(): {key: string, value: string}[] {
+  getPresentation(): {key: string, value: string, className: string}[] {
     return this.getSubStates().map(k => {
       return {
         key: k.name,
-        value: k.presentationValue()
+        value: k.presentationValue(),
+        className: k.className
       };
     });
   }
