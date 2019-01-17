@@ -1,6 +1,7 @@
 import {OrganPlayable} from './organ-playable';
 import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
 import {BasicStatefulIconSubState, StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
+import {GameState} from '@/interface/game-state';
 
 export class LiverOrgan extends OrganPlayable {
 
@@ -11,6 +12,11 @@ export class LiverOrgan extends OrganPlayable {
       ...super.getSubStates(),
       this.sugar
     ];
+  }
+
+  onTurnEnd(gameState: GameState): void {
+    super.onTurnEnd(gameState);
+    this.health.changeValue(gameState, this.health.getValue() + 1);
   }
 
   getValues(): { [p: string]: any } {

@@ -147,11 +147,14 @@ export const UsersStore: StoreOptions<UsersState> = {
         userTarget = context.state.user;
       else userTarget = context.state.enemy;
 
-      const tempState = GameService.getInstance().play(
-        context.state.user.hand[action.playedIndex],
-        userTarget.state
+      const gameState = GameService.getInstance().play(
+        action.playedIndex,
+        context.state.user.hand,
+        context.state.user.state,
+        context.state.enemy.state,
+        action.target === context.state.user.name
       );
-      const targetWon = GameService.getInstance().isWinConditionMet(tempState);
+      const targetWon = GameService.getInstance().isWinConditionMet(gameState);
       if (targetWon) {
         userService.updateUser({
           name: context.state.user.name,
@@ -175,28 +178,20 @@ export const UsersStore: StoreOptions<UsersState> = {
         });
         return;
       }
+      GameService.getInstance().endTurn(gameState);
       userService.updateUser({
         name: context.state.user.name,
         turn: false,
         roll: 0,
         lastPlay: context.state.user.hand[action.playedIndex],
-        hand: context.state.user.hand
-          .filter((_, index) => index !== action.playedIndex)
-          .concat(GameService.getInstance().getRandomIcon()),
-        state: GameService.getInstance().endTurn(
-          context.state.user.name === userTarget.name
-            ? tempState
-            : context.state.user.state
-        )
+        hand: gameState.hand,
+        state: gameState.state.map(i => i.getState())
       });
       userService.updateUser({
         name: context.state.enemy.name,
         turn: true,
         roll: 0,
-        state:
-          context.state.enemy.name === userTarget.name
-            ? tempState
-            : context.state.enemy.state
+        state: gameState.enemyState.map(i => i.getState())
       });
     },
     permuteHand: function(context, action: UsersStorePermuteHandAction) {

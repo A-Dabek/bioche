@@ -10,6 +10,7 @@ import {LungsOrgan} from '@/collection/organ/lungs-organ';
 import {BowelsOrgan} from '@/collection/organ/bowels-organ';
 import {LiverOrgan} from '@/collection/organ/liver-organ';
 import {StomachOrgan} from '@/collection/organ/stomach-organ';
+import {GameState} from '@/interface/game-state';
 
 export class GameService {
   private static instance: GameService;
@@ -18,22 +19,30 @@ export class GameService {
   };
   readonly statelessLibrary: { [k: string]: () => PlayableIcon };
 
-  play(p: string, states: any[]): any[] {
-    const played = this.statelessLibrary[p]();
-    return this.eventHandler(
-      played,
-      states.map(i => this.statefulLibrary[i.name](i))
-    );
+  play(playedIndex: number, hand: string[], userState: FirebaseStatefulIcon[], enemyState: FirebaseStatefulIcon[], targetMyself: boolean): GameState {
+    const gameState: GameState = {
+      hand: hand.filter((i, index) => index !== playedIndex),
+      state: userState.map(i => this.statefulLibrary[i.name](i)),
+      get targetState() {
+        return targetMyself ? gameState.state : gameState.enemyState;
+      },
+      enemyState: enemyState.map(i => this.statefulLibrary[i.name](i))
+    };
+    this.eventHandler(gameState, this.statelessLibrary[hand[playedIndex]]());
+    return gameState;
   }
 
-  endTurn(state: any[]): any[] {
-    let newState: StatefulIcon[] = state.map(i =>
-      this.statefulLibrary[i.name](i)
+  endTurn(gameState: GameState): void {
+    gameState.hand.push(
+      this.getRandomIcon()
     );
+    // let newState: StatefulIcon[] = gameState.state.map(i =>
+    //   this.statefulLibrary[i.name](i)
+    // );
     // let events = [] as Change[];
     // newState.forEach(h => h.onTurnEnd());
     // events.forEach(ev => (newState = ev.applyToTargetState(newState)));
-    return newState.map(i => i.getState());
+    // return newState.map(i => i.getState());
   }
 
   getRandomIcon(): string {
@@ -41,14 +50,18 @@ export class GameService {
     return keys[Math.floor(Math.random() * keys.length)];
   }
 
-  isWinConditionMet(state: any[]): boolean {
+  isWinConditionMet(state: GameState): boolean {
     return false;//state.every(i => i.durability <= 0);
   }
 
   startingState(): FirebaseStatefulIcon[] {
     return [
-      this.statefulLibrary.brain(),
+      // this.statefulLibrary.brain(),
       this.statefulLibrary.heart(),
+      // this.statefulLibrary.lungs(),
+      // this.statefulLibrary.stomach(),
+      // this.statefulLibrary.bowels(),
+      this.statefulLibrary.liver(),
       this.statefulLibrary.kidneys(),
     ].map(i => i.getState())
   }
@@ -59,16 +72,10 @@ export class GameService {
   }
 
   private eventHandler(
-    played: PlayableIcon,
-    state: StatefulIcon[]
-  ): any[] {
-    played.applyEffect({
-      targetState: state,
-      hand: [],
-      state: [],
-      enemyState: []
-    });
-    return state.map(i => i.getState());
+    gameState: GameState,
+    played: PlayableIcon
+  ): void {
+    played.applyEffect(gameState);
   }
 
   private constructor() {
