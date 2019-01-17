@@ -11,6 +11,7 @@ import {LiverOrgan} from '@/collection/organ/liver-organ';
 import {StomachOrgan} from '@/collection/organ/stomach-organ';
 import {GameState} from '@/interface/game-state';
 import {PillPlayable} from '@/collection/effects/pill.playable';
+import {MedicinePillsPlayable} from '@/collection/effects/medicine-pills.playable';
 
 export class GameService {
   private static instance: GameService;
@@ -81,7 +82,8 @@ export class GameService {
     this.statelessLibrary = {
       // defibrilate: () => new DefibrilateEffect(),
       glass_shot: () => new GlassShotPlayable(),
-      pill: () => new PillPlayable()
+      pill: () => new PillPlayable(),
+      medicine_pills: () => new MedicinePillsPlayable()
     };
     this.statefulLibrary = {
       heart: state => new HeartOrgan(state),
