@@ -1,7 +1,6 @@
 import {KidneysOrgan} from '@/collection/organ/kidneys-organ';
 import {BrainOrgan} from '@/collection/organ/brain-organ';
 import {HeartOrgan} from '@/collection/organ/heart-organ';
-import {DefibrilateEffect} from '@/collection/effects/defibrilate.playable';
 import {GlassShotPlayable} from '@/collection/effects/glass-shot.playable';
 import {StatefulIcon} from '@/core/stateful-icon';
 import {PlayableIcon} from '@/core/playable-icon';
@@ -11,13 +10,33 @@ import {BowelsOrgan} from '@/collection/organ/bowels-organ';
 import {LiverOrgan} from '@/collection/organ/liver-organ';
 import {StomachOrgan} from '@/collection/organ/stomach-organ';
 import {GameState} from '@/interface/game-state';
+import {PillPlayable} from '@/collection/effects/pill.playable';
 
 export class GameService {
   private static instance: GameService;
-  readonly statefulLibrary: {
-    [k: string]: (state?: FirebaseStatefulIcon) => StatefulIcon;
-  };
+  readonly statefulLibrary: { [k: string] : (state?: FirebaseStatefulIcon) => StatefulIcon };
   readonly statelessLibrary: { [k: string]: () => PlayableIcon };
+
+  static getInstance(): GameService {
+    if (!GameService.instance) GameService.instance = new GameService();
+    return GameService.instance;
+  }
+
+  startingState(): FirebaseStatefulIcon[] {
+    return [
+      // this.statefulLibrary.brain(),
+      // this.statefulLibrary.heart(),
+      // this.statefulLibrary.lungs(),
+      // this.statefulLibrary.stomach(),
+      // this.statefulLibrary.bowels(),
+      this.statefulLibrary.liver(),
+      this.statefulLibrary.kidneys(),
+    ].map(i => i.getState())
+  }
+
+  isWinConditionMet(state: GameState): boolean {
+    return false;//state.every(i => i.durability <= 0);
+  }
 
   play(playedIndex: number, hand: string[], userState: FirebaseStatefulIcon[], enemyState: FirebaseStatefulIcon[], targetMyself: boolean): GameState {
     const gameState: GameState = {
@@ -32,10 +51,18 @@ export class GameService {
     return gameState;
   }
 
+  private eventHandler(
+    gameState: GameState,
+    played: PlayableIcon
+  ): void {
+    played.applyEffect(gameState);
+  }
+
   endTurn(gameState: GameState): void {
     gameState.hand.push(
       this.getRandomIcon()
     );
+    gameState.state.forEach(s => s.onTurnEnd(gameState));
     // let newState: StatefulIcon[] = gameState.state.map(i =>
     //   this.statefulLibrary[i.name](i)
     // );
@@ -50,38 +77,11 @@ export class GameService {
     return keys[Math.floor(Math.random() * keys.length)];
   }
 
-  isWinConditionMet(state: GameState): boolean {
-    return false;//state.every(i => i.durability <= 0);
-  }
-
-  startingState(): FirebaseStatefulIcon[] {
-    return [
-      // this.statefulLibrary.brain(),
-      this.statefulLibrary.heart(),
-      // this.statefulLibrary.lungs(),
-      // this.statefulLibrary.stomach(),
-      // this.statefulLibrary.bowels(),
-      this.statefulLibrary.liver(),
-      this.statefulLibrary.kidneys(),
-    ].map(i => i.getState())
-  }
-
-  static getInstance(): GameService {
-    if (!GameService.instance) GameService.instance = new GameService();
-    return GameService.instance;
-  }
-
-  private eventHandler(
-    gameState: GameState,
-    played: PlayableIcon
-  ): void {
-    played.applyEffect(gameState);
-  }
-
   private constructor() {
     this.statelessLibrary = {
-      defibrilate: () => new DefibrilateEffect(),
-      glass_shot: () => new GlassShotPlayable()
+      // defibrilate: () => new DefibrilateEffect(),
+      glass_shot: () => new GlassShotPlayable(),
+      pill: () => new PillPlayable()
     };
     this.statefulLibrary = {
       heart: state => new HeartOrgan(state),

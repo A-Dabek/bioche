@@ -13,20 +13,13 @@ export class KidneysOrgan extends OrganPlayable {
     ];
   }
 
-  getValues(): { [p: string]: any } {
-    return {
-      ...super.getValues(),
-      water: this.water.getValue()
-    };
-  }
-
   constructor(state?: FirebaseStatefulIcon) {
     super('kidneys', state);
     if (state) {
-      this.water = new BasicStatefulIconSubState<number>('droplets', state.values['water']);
+      this.water = new BasicStatefulIconSubState<number>('droplets', 'water', state.values['water'] || 10);
     }
     else {
-      this.water = new BasicStatefulIconSubState<number>('droplets', 10);
+      this.water = new BasicStatefulIconSubState<number>('droplets', 'water', 10);
     }
   }
 }

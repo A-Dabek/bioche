@@ -48,13 +48,6 @@
         return /^[0-9a-fA-F]+$/.test(value);
       }
     },
-    backgroundColor: {
-      type: String,
-
-      validator: function (value) {
-        return /^[0-9a-fA-F]+$/.test(value);
-      }
-    },
     text: {type: String},
     sideSize: {type: String, default: '50px'}
   },
@@ -62,13 +55,13 @@
     path: function() {
       return this.$store.getters.getIcon(this.name).path;
     },
-    paletteSvg: function(): FirebasePalette {
+    palette: function(): FirebasePalette {
       return this.$store.getters.getPalette(
         this.$store.state.users.user.palette
       );
     },
-    stroke: function() {
-      return `#${this.strokeColor || this.paletteSvg.primary}`;
+    stroke: function(): string {
+      return `#${this.strokeColor || this.palette.primary}`;
     }
   }
 });

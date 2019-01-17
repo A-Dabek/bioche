@@ -2,13 +2,14 @@ import {GameState} from '@/interface/game-state';
 
 export interface StatefulIconSubState<T> {
   readonly name: string;
+  readonly mapper: string;
+  readonly className: string;
   getValue(): T;
-  presentationValue(): string;
-  className: string;
-  changeValue(gameState: GameState, newValue: T): void;
+  presentation(): {key: string, value: string, className: string};
+  setValue(gameState: GameState, newValue: T): void;
 }
 
-export class BasicStatefulIconSubState<T extends number | string> implements  StatefulIconSubState<T> {
+export class BasicStatefulIconSubState<T extends number | string | boolean> implements  StatefulIconSubState<T> {
 
   readonly className = '';
   private value: T;
@@ -17,39 +18,38 @@ export class BasicStatefulIconSubState<T extends number | string> implements  St
     return this.value;
   }
 
-  presentationValue(): string {
-    return String(this.value);
+  presentation(): {key: string, value: string, className: string} {
+    return {
+      key: this.name,
+      value: String(this.value),
+      className: this.className
+    };
   }
 
-  changeValue(gameState: GameState, newValue: T): void {
+  setValue(gameState: GameState, newValue: T): void {
     this.value = newValue;
-
   }
 
-  constructor(readonly name: string, startValue: T) {
+  constructor(readonly name: string, readonly mapper: string, startValue: T) {
     this.value = startValue;
   }
 }
 
-export class BooleanStatefulIconSubState implements  StatefulIconSubState<boolean> {
+export class NumberStatefulIconSubState extends BasicStatefulIconSubState<number> {
 
-  private value: boolean;
-  readonly className = '';
-
-  getValue(): boolean {
-    return this.value;
+  changeValueBy(gameState: GameState, changeBy: number): void {
+    this.setValue(gameState, this.getValue() + changeBy);
   }
+}
 
-  presentationValue(): string {
-    return '';
-  }
+export class BooleanStatefulIconSubState extends BasicStatefulIconSubState<boolean> {
 
-  changeValue(gameState: GameState, newValue: boolean): void {
-    this.value = newValue;
-  }
-
-  constructor(readonly name: string, startValue: boolean) {
-    this.value = startValue;
+  presentation(): {key: string, value: string, className: string} {
+    return {
+      ...super.presentation(),
+      className: 'stop-beating',
+      key: this.getValue() ? this.name : ''
+    }
   }
 }
 

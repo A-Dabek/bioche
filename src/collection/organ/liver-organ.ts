@@ -1,11 +1,12 @@
 import {OrganPlayable} from './organ-playable';
 import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
-import {BasicStatefulIconSubState, StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
+import {NumberStatefulIconSubState, StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
 import {GameState} from '@/interface/game-state';
 
 export class LiverOrgan extends OrganPlayable {
 
   readonly sugar: StatefulIconSubState<number>;
+  // readonly health: NumberStatefulIconSubState;
 
   getSubStates() {
     return [
@@ -16,23 +17,12 @@ export class LiverOrgan extends OrganPlayable {
 
   onTurnEnd(gameState: GameState): void {
     super.onTurnEnd(gameState);
-    this.health.changeValue(gameState, this.health.getValue() + 1);
-  }
-
-  getValues(): { [p: string]: any } {
-    return {
-      ...super.getValues(),
-      sugar: this.sugar.getValue()
-    };
+    this.health.changeValueBy(gameState, 1);
   }
 
   constructor(state?: FirebaseStatefulIcon) {
-    super("liver");
-    if (state) {
-      this.sugar = new BasicStatefulIconSubState<number>('cubes', state.values['sugar']);
-    }
-    else {
-      this.sugar = new BasicStatefulIconSubState<number>('cubes', 10);
-    }
+    super("liver", state);
+    this.sugar = new NumberStatefulIconSubState('cubes', 'sugar', state ? state.values['sugar'] || 10 : 10);
+    // this.health = new NumberStatefulIconSubState('health_up', 'health', state ? state.values['health'] : 10);
   }
 }

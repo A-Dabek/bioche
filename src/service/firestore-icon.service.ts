@@ -1,4 +1,4 @@
-import {FirebaseIcon} from '@/interface/icon';
+import {FirebaseIcon} from '@/interface/firebase-icon';
 
 export class FirestoreIconService {
   startLibrary(): Promise<{ [k: string]: FirebaseIcon }> {

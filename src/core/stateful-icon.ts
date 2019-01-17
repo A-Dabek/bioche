@@ -13,18 +13,18 @@ export abstract class StatefulIcon {
     return [];
   }
 
-  getValues(): {[k: string]: any} {
-    return {};
+  getValues(): {[k: string]: string | number | boolean} {
+    const obj = {} as {[k: string]: string | number | boolean};
+    this.getSubStates().forEach(sub => {
+      obj[sub.mapper] = sub.getValue();
+    });
+    return obj;
   }
 
   getPresentation(): {key: string, value: string, className: string}[] {
-    return this.getSubStates().map(k => {
-      return {
-        key: k.name,
-        value: k.presentationValue(),
-        className: k.className
-      };
-    });
+    return this.getSubStates()
+      .map(k => k.presentation())
+      .filter(k => !!k.key);
   }
 
   getState(): FirebaseStatefulIcon {

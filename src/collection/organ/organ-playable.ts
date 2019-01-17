@@ -2,13 +2,13 @@ import {StatefulIcon} from '@/core/stateful-icon';
 import {GameState} from '@/interface/game-state';
 import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
 import {
-  BasicStatefulIconSubState,
   BooleanStatefulIconSubState,
+  NumberStatefulIconSubState,
   StatefulIconSubState
 } from '@/interface/stateful-icon-sub-state';
 
 export abstract class OrganPlayable extends StatefulIcon {
-  readonly health: StatefulIconSubState<number>;
+  readonly health: NumberStatefulIconSubState;
   readonly stopped: StatefulIconSubState<boolean>;
 
   getSubStates() {
@@ -24,31 +24,10 @@ export abstract class OrganPlayable extends StatefulIcon {
   onTurnStart(gameState: GameState): void {
   }
 
-  getValues(): { [p: string]: any } {
-    return {
-      ...super.getValues(),
-      health: this.health.getValue(),
-      stopped: this.stopped.getValue()
-    };
-  }
-
-  getPresentation(): {key: string, value: string, className: string}[] {
-    const present = super.getPresentation();
-    if (this.stopped.getValue()) return present.concat({key: this.stopped.name, value: '', className: 'stop-beating'});
-    else {
-      return present;
-    }
-  }
-
-  constructor(name: string, state?: FirebaseStatefulIcon) {
+  constructor(name: string, state: FirebaseStatefulIcon | undefined) {
     super(name);
-    if (state) {
-      this.health = new BasicStatefulIconSubState<number>('health_normal', state.values['health']);
-      this.stopped = new BooleanStatefulIconSubState('pause_button', state.values['stopped']);
-    }
-    else {
-      this.health = new BasicStatefulIconSubState<number>('health_normal', 10);
-      this.stopped = new BooleanStatefulIconSubState('pause_button', false);
-    }
+    this.health = new NumberStatefulIconSubState('health_normal', 'health', state ? state.values['health'] : 10);
+    console.log(name, state ? state.values : 'no state');
+    this.stopped = new BooleanStatefulIconSubState('pause_button', 'stopped', state ? state.values['stopped'] : false);
   }
 }

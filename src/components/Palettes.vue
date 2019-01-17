@@ -16,15 +16,15 @@
 <script lang="ts">
   import Vue from "vue";
   import IconVue from "@/components/Icon.vue";
-  import {Palette} from "@/interface/palette";
   import {UsersStoreSetPalette} from "@/vuex/users.store-module";
+  import {FirebasePalette} from "../interface/firebase-palette";
 
   export default Vue.extend({
   components: {
     icon: IconVue
   },
   computed: {
-    palettes: function(): Palette[] {
+    palettes: function(): FirebasePalette[] {
       return Object.values(this.$store.state.palettes.library);
     }
   },
