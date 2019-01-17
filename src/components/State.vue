@@ -73,7 +73,7 @@
     /*padding: 10px;*/
   }
   .beating {
-    animation: alternate-reverse infinite beat .25s;
+    animation: alternate-reverse infinite beat 250ms;
   }
   .stop-beating {
     animation: none;
@@ -82,5 +82,8 @@
     to {
       transform: scale(1.1)
     }
+  }
+  .col-lg-2 {
+    flex: 0 0 calc(100% / 7);
   }
 </style>

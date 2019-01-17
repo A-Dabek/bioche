@@ -5,7 +5,7 @@
       viewBox="0 0 512 512"
       v-bind:style="{'width': sideSize, 'height': sideSize}"
     >
-      <path d="M0 0h512v512H0z" v-bind:fill="background" fill-opacity="1"></path>
+      <path d="M0 0h512v512H0z" fill-opacity="0"></path>
       <g transform="translate(0,0)" style="touch-action: none;">
         <path v-bind:d="path" v-bind:fill="stroke" fill-opacity="1"></path>
       </g>
@@ -33,7 +33,7 @@
 
 <script lang="ts">
   import Vue from "vue";
-  import {Palette} from "@/interface/palette";
+  import {FirebasePalette} from "../interface/firebase-palette";
 
   export default Vue.extend({
   name: "icon",
@@ -62,16 +62,13 @@
     path: function() {
       return this.$store.getters.getIcon(this.name).path;
     },
-    palette: function(): Palette {
+    paletteSvg: function(): FirebasePalette {
       return this.$store.getters.getPalette(
         this.$store.state.users.user.palette
       );
     },
     stroke: function() {
-      return `#${this.strokeColor || this.palette.primary}`;
-    },
-    background: function() {
-      return `#${this.backgroundColor || this.palette.secondary}`;
+      return `#${this.strokeColor || this.paletteSvg.primary}`;
     }
   }
 });

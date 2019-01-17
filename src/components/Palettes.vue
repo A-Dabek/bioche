@@ -1,23 +1,25 @@
 <template>
-  <div class="root row">
-    <div class="col-6" v-for="p of palettes" v-bind:key="p.name" v-on:click="pickPalette(p.idDoc)">
-      <icon
-        v-bind:name="'palette'"
-        v-bind:strokeColor="p.primary"
-        v-bind:backgroundColor="p.secondary"
-      />
-      <label class="bio-label ml-2">{{p.name}}</label>
+  <div class="root row mt-1">
+    <div class="col-6 p-1" v-for="p of palettes" v-bind:key="p.name" v-on:click="pickPalette(p.idDoc)">
+      <div class="pb-1" v-bind:style="{'background': `#${p.secondary}`}">
+        <icon
+                v-bind:name="'palette'"
+                v-bind:strokeColor="p.primary"
+                v-bind:backgroundColor="p.secondary"
+        />
+        <label class="bio-label ml-2">{{p.name}}</label>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import IconVue from "@/components/Icon.vue";
-import { Palette } from "@/interface/palette";
-import { UsersStoreSetPalette } from "@/vuex/users.store-module";
-import { functions } from "firebase";
-export default Vue.extend({
+  import Vue from "vue";
+  import IconVue from "@/components/Icon.vue";
+  import {Palette} from "@/interface/palette";
+  import {UsersStoreSetPalette} from "@/vuex/users.store-module";
+
+  export default Vue.extend({
   components: {
     icon: IconVue
   },

@@ -6,6 +6,10 @@ import {GlassShotPlayable} from '@/collection/effects/glass-shot.playable';
 import {StatefulIcon} from '@/core/stateful-icon';
 import {PlayableIcon} from '@/core/playable-icon';
 import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
+import {LungsOrgan} from '@/collection/organ/lungs-organ';
+import {BowelsOrgan} from '@/collection/organ/bowels-organ';
+import {LiverOrgan} from '@/collection/organ/liver-organ';
+import {StomachOrgan} from '@/collection/organ/stomach-organ';
 
 export class GameService {
   private static instance: GameService;
@@ -75,7 +79,11 @@ export class GameService {
     this.statefulLibrary = {
       heart: state => new HeartOrgan(state),
       brain: state => new BrainOrgan(state),
-      kidneys: state => new KidneysOrgan(state)
+      kidneys: state => new KidneysOrgan(state),
+      lungs: state => new LungsOrgan(state),
+      bowels: state => new BowelsOrgan(state),
+      liver: state => new LiverOrgan(state),
+      stomach: state => new StomachOrgan(state)
     };
     Object.keys(this.statefulLibrary)
       .concat(Object.keys(this.statelessLibrary))
