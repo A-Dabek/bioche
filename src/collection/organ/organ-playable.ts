@@ -6,6 +6,11 @@ import {
   NumberStatefulIconSubState,
   StatefulIconSubState
 } from '@/interface/stateful-icon-sub-state';
+import {PlayableUtils} from '@/collection/playable-utils';
+import {HeartOrgan} from '@/collection/organ/heart-organ';
+import {LungsOrgan} from '@/collection/organ/lungs-organ';
+import {KidneysOrgan} from '@/collection/organ/kidneys-organ';
+import {LiverOrgan} from '@/collection/organ/liver-organ';
 
 export abstract class OrganPlayable extends StatefulIcon {
   readonly health: NumberStatefulIconSubState;
@@ -14,11 +19,31 @@ export abstract class OrganPlayable extends StatefulIcon {
   getSubStates() {
     return [
       ...super.getSubStates(),
-      this.health
+      this.health,
+      this.stopped
     ];
   }
 
   onTurnEnd(gameState: GameState): void {
+    if (this.health.getValue() <= 0) return;
+    const heart = PlayableUtils.findConcrete<HeartOrgan>('heart', gameState.state);
+    const lungs = PlayableUtils.findConcrete<LungsOrgan>('lungs', gameState.state);
+    const kidneys = PlayableUtils.findConcrete<KidneysOrgan>('kidneys', gameState.state);
+    const liver = PlayableUtils.findConcrete<LiverOrgan>('liver', gameState.state);
+    if (heart) {
+      if (heart.stopped.getValue()) this.health.changeValueBy(gameState, -1);
+    }
+    if (lungs) {
+      if (lungs.stopped.getValue()) this.health.changeValueBy(gameState, -1);
+    }
+    if (kidneys) {
+      if (kidneys.water.getValue() <= 0) this.health.changeValueBy(gameState, -1);
+      else kidneys.water.changeValueBy(gameState, -1);
+    }
+    if (liver) {
+      if (liver.sugar.getValue() <= 0) this.health.changeValueBy(gameState, -1);
+      else liver.sugar.changeValueBy(gameState, -1);
+    }
   }
 
   onTurnStart(gameState: GameState): void {
@@ -27,7 +52,6 @@ export abstract class OrganPlayable extends StatefulIcon {
   constructor(name: string, state: FirebaseStatefulIcon | undefined) {
     super(name);
     this.health = new NumberStatefulIconSubState('health_normal', 'health', state ? state.values['health'] : 10);
-    console.log(name, state ? state.values : 'no state');
     this.stopped = new BooleanStatefulIconSubState('pause_button', 'stopped', state ? state.values['stopped'] : false);
   }
 }

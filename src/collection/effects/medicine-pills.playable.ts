@@ -3,7 +3,7 @@ import {GameState} from '@/interface/game-state';
 
 export class MedicinePillsPlayable implements PlayableIcon {
   applyEffect(gameState: GameState) {
-    gameState.hand.push('pill', 'pill', 'pill');
+    gameState.hand.push(...Array(3).fill('pill'));
     // const liver = PlayableUtils.findConcrete<LiverOrgan>('liver', gameState.targetState);
     // const kidneys = PlayableUtils.findConcrete<KidneysOrgan>('kidneys', gameState.targetState);
     // if (kidneys) {

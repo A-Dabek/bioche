@@ -1,12 +1,12 @@
 import {OrganPlayable} from './organ-playable';
 import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
-import {NumberStatefulIconSubState, StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
+import {NumberStatefulIconSubState} from '@/interface/stateful-icon-sub-state';
 import {GameState} from '@/interface/game-state';
 import {HealthUpSubState} from '@/collection/sub-states/health-up.sub-state';
 
 export class LiverOrgan extends OrganPlayable {
 
-  readonly sugar: StatefulIconSubState<number>;
+  readonly sugar: NumberStatefulIconSubState;
   readonly health: HealthUpSubState;
 
   getSubStates() {

@@ -6,8 +6,9 @@ export class HealthUpSubState extends NumberStatefulIconSubState {
   private pristine: boolean;
 
   setValue(gameState: GameState, newValue: number): void {
+    const value = this.getValue();
     super.setValue(gameState, newValue);
-    if (this.getValue() < this.startValue) this.pristine = false;
+    if (this.getValue() < value) this.pristine = false;
   }
 
   presentation(): { key: string; value: string; className: string } {
@@ -23,7 +24,7 @@ export class HealthUpSubState extends NumberStatefulIconSubState {
     }
   }
 
-  constructor(private startValue: number) {
+  constructor(startValue: number) {
     super('health_normal', 'health', startValue);
     this.pristine = true;
   }
