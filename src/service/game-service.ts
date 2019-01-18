@@ -1,7 +1,7 @@
 import {KidneysOrgan} from '@/collection/organ/kidneys-organ';
 import {BrainOrgan} from '@/collection/organ/brain-organ';
 import {HeartOrgan} from '@/collection/organ/heart-organ';
-import {GlassShotPlayable} from '@/collection/effects/glass-shot.playable';
+import {GlassShotPlayable} from '@/collection/food/glass-shot.playable';
 import {StatefulIcon} from '@/core/stateful-icon';
 import {PlayableIcon} from '@/core/playable-icon';
 import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
@@ -12,6 +12,17 @@ import {StomachOrgan} from '@/collection/organ/stomach-organ';
 import {GameState} from '@/interface/game-state';
 import {PillPlayable} from '@/collection/effects/pill.playable';
 import {MedicinePillsPlayable} from '@/collection/effects/medicine-pills.playable';
+import {DefibrilateEffect} from '@/collection/effects/defibrilate.playable';
+import {BerriesPlayable} from '@/collection/food/berries.playable';
+import {ChocolatePlayable} from '@/collection/food/chocolate.playable';
+import {CookiePlayable} from '@/collection/food/cookie.playable';
+import {CakePlayable} from '@/collection/food/cake.playable';
+import {CheesePlayable} from '@/collection/food/cheese.playable';
+import {OrangePlayable} from '@/collection/food/orange.playable';
+import {MeatPlayable} from '@/collection/food/meat.playable';
+import {FishPlayable} from '@/collection/food/fish.playable';
+import {WatermelonPlayable} from '@/collection/food/watermelon.playable';
+import {BreadPlayable} from '@/collection/food/bread.playable';
 
 export class GameService {
   private static instance: GameService;
@@ -80,8 +91,21 @@ export class GameService {
 
   private constructor() {
     this.statelessLibrary = {
-      // defibrilate: () => new DefibrilateEffect(),
+      //food
+      chocolate: () => new ChocolatePlayable(),
+      cookie: () => new CookiePlayable(),
+      cake: () => new CakePlayable(),
+      cheese: () => new CheesePlayable(),
+      bread: () => new BreadPlayable(),
+      meat: () => new MeatPlayable(),
+      orange: () => new OrangePlayable(),
+      fish: () => new FishPlayable(),
+      berries: () => new BerriesPlayable(),
+      watermelon: () => new WatermelonPlayable(),
       glass_shot: () => new GlassShotPlayable(),
+      // other
+      defibrilate: () => new DefibrilateEffect(),
+      // medicine
       pill: () => new PillPlayable(),
       medicine_pills: () => new MedicinePillsPlayable()
     };

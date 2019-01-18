@@ -6,7 +6,7 @@
             v-on:add="on_drop($event)"
     >
       <div class="row m-0">
-        <div class="col-3 col-lg-2" v-for="(icon, index) of state" v-bind:key="index">
+        <div class="col" v-for="(icon, index) of state" v-bind:key="index">
         <div class="row p-2">
           <div class="col-12 p-0 beating" v-bind:class="icon.present.map(i => i.className).join(' ')">
             <icon
@@ -82,8 +82,5 @@
     to {
       transform: scale(1.1)
     }
-  }
-  .col-lg-2 {
-    flex: 0 0 calc(100% / 7);
   }
 </style>
