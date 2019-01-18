@@ -3,7 +3,7 @@
     <div class="col-12">
       <div>
         <icon v-bind:name="iconName"></icon>
-        <label class="desc-label">{{icon.header}}</label>
+        <label class="desc-label">{{iconName}} {{icon.header}}</label>
       </div>
       <div>{{icon.description}}</div>
     </div>
