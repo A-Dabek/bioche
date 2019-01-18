@@ -42,7 +42,10 @@ export const PaletteLibraryStore: StoreOptions<PaletteLibraryState> = {
         .get()
         .then(query => {
           const library = {} as any;
-          query.forEach(q => (library[q.id] = { ...q.data(), idDoc: q.id }));
+          query.forEach(q => {
+            const palette = { ...q.data(), idDoc: q.id} as FirebasePalette;
+            library[q.id] = { ...palette, primary: `#${palette.primary}`, secondary: `#${palette.secondary}`};
+          });
           context.commit('initPaletteLibrary', library);
         })
         .catch(() => context.commit('initPaletteLibrary', {}));

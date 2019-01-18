@@ -45,7 +45,7 @@
     strokeColor: {
       type: String,
       validator: function (value) {
-        return /^[0-9a-fA-F]+$/.test(value);
+        return /^#[0-9a-fA-F]+$/.test(value);
       }
     },
     text: {type: String},
@@ -61,7 +61,7 @@
       );
     },
     stroke: function(): string {
-      return `#${this.strokeColor || this.palette.primary}`;
+      return this.strokeColor || this.palette.primary;
     }
   }
 });

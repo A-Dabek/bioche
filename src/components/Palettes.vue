@@ -1,7 +1,7 @@
 <template>
   <div class="root row mt-1">
     <div class="col-6 p-1" v-for="p of palettes" v-bind:key="p.name" v-on:click="pickPalette(p.idDoc)">
-      <div class="pb-1" v-bind:style="{'background': `#${p.secondary}`}">
+      <div class="pb-1" v-bind:style="{'background': p.secondary}">
         <icon
                 v-bind:name="'palette'"
                 v-bind:strokeColor="p.primary"

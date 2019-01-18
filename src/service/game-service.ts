@@ -36,11 +36,11 @@ export class GameService {
 
   startingState(): FirebaseStatefulIcon[] {
     return [
-      // this.statefulLibrary.brain(),
-      // this.statefulLibrary.heart(),
-      // this.statefulLibrary.lungs(),
-      // this.statefulLibrary.stomach(),
-      // this.statefulLibrary.bowels(),
+      this.statefulLibrary.brain(),
+      this.statefulLibrary.heart(),
+      this.statefulLibrary.lungs(),
+      this.statefulLibrary.stomach(),
+      this.statefulLibrary.bowels(),
       this.statefulLibrary.liver(),
       this.statefulLibrary.kidneys(),
     ].map(i => i.getState())

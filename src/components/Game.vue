@@ -1,13 +1,13 @@
 <template>
-  <div class="row game-root">
-    <div class="col-12 header-state game-content">
+  <div class="row game-root d-flex flex-row">
+    <div class="col-12 align-self-start">
       <state v-bind:state="enemy.state" v-on:play="play_on_enemy"/>
       <hud v-bind:user="enemy" v-bind:turn="!myTurn"/>
     </div>
-    <div class="col-12 hand game-content">
+    <div class="col-12 hand flex-grow-1 align-self-stretch">
       <hand/>
     </div>
-    <div class="col-12 footer-state">
+    <div class="col-12 align-self-end">
       <hud v-bind:user="user" v-bind:turn="myTurn"/>
       <state v-bind:state="user.state" v-on:play="play_on_user"/>
     </div>
@@ -15,18 +15,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import HandVue from "@/components/Hand.vue";
-import StateVue from "@/components/State.vue";
-import {
-  UsersStoreStartGameAction,
-  UsersStorePlayAction
-} from "@/vuex/users.store-module";
-import { User } from "@/interface/user";
-import IconVue from "@/components/Icon.vue";
-import { functions } from "firebase";
-import HudVue from "@/components/Hud.vue";
-export default Vue.extend({
+  import Vue from "vue";
+  import HandVue from "@/components/Hand.vue";
+  import StateVue from "@/components/State.vue";
+  import {UsersStorePlayAction, UsersStoreStartGameAction} from "@/vuex/users.store-module";
+  import {User} from "@/interface/user";
+  import IconVue from "@/components/Icon.vue";
+  import HudVue from "@/components/Hud.vue";
+
+  export default Vue.extend({
   name: "game",
   components: {
     hand: HandVue,
@@ -62,13 +59,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .game-root {
-  margin-top: 2.5vh;
-  margin-bottom: 2.5vh;
-  display: flex;
-  flex-direction: column;
-  min-height: 95vh;
-}
-.game-content {
-  flex: 1;
+    min-height: 95vh;
 }
 </style>
