@@ -8,11 +8,19 @@
       <div class="row m-0">
         <div class="col" v-for="(icon, index) of state" v-bind:key="index">
         <div class="row p-2">
-          <div class="col-12 p-0 beating" v-bind:class="icon.present.map(i => i.className).join(' ')">
-            <icon
-                v-on:click="show_desc(icon.name)"
-                v-bind:sideSize="'80%'"
-                v-bind:name="icon.name"/>
+          <div class="col-12 p-0">
+            <div class="beating" v-bind:style="{'height': icon.present.find(i => i.className === 'stop-beating') ? '0' : 'auto'}">
+              <icon
+                    v-on:click="show_desc(icon.name)"
+                    v-bind:sideSize="'80%'"
+                    v-bind:name="icon.name"/>
+            </div>
+            <div>
+              <icon
+                      v-on:click="show_desc(icon.name)"
+                      v-bind:sideSize="icon.present.find(i => i.className === 'stop-beating') ? '80%' : '0'"
+                      v-bind:name="icon.name"/>
+            </div>
           </div>
           <div class="col-3 col-lg-3 p-0" v-for="(effect, index) of icon.present" v-bind:key="index">
             <icon

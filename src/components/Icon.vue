@@ -1,5 +1,5 @@
 <template>
-  <div class="icon d-inline p-1" v-on:click="$emit('click')">
+  <div class="icon d-inline" v-on:click="$emit('click')">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
