@@ -5,6 +5,7 @@ import {StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
 import {BacteriaSickSubState} from '@/collection/bacteria/bacteria-sick.sub-state';
 import {ParasiteSickSubState} from '@/collection/parasite/parasite-sick.sub-state';
 import {VirusSickSubState} from '@/collection/virus/virus-sick.sub-state';
+import {GameState} from '@/interface/game-state';
 
 export class BowelsOrgan extends OrganPlayable {
 
@@ -21,6 +22,14 @@ export class BowelsOrgan extends OrganPlayable {
       this.bacteria,
       this.parasite
     ]
+  }
+
+  onTurnEnd(gameState: GameState): void {
+    super.onTurnEnd(gameState);
+    this.antibodies.changeValueBy(gameState, 5);
+    if (this.virus.getValue() > 0) this.antibodies.changeValueBy(gameState, -this.bacteria.getValue());
+    if (this.virus.getValue() > 0) this.antibodies.changeValueBy(gameState, -this.virus.getValue());
+    if (this.parasite.getValue() > 0) this.antibodies.changeValueBy(gameState, -this.parasite.getValue());
   }
 
   constructor(state?: FirebaseStatefulIcon) {

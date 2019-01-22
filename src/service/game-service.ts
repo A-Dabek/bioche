@@ -16,6 +16,35 @@ import {CatPlayable} from '@/collection/parasite/cat.playable';
 import {MosquitoPlayable} from '@/collection/parasite/mosquito.playable';
 import {BirdPlayable} from '@/collection/virus/bird.playable';
 import {FangsPlayable} from '@/collection/virus/fangs.playable';
+import {AntibioticsPlayable} from '@/collection/medicine/antibiotics.playable';
+import {PillPlayable} from '@/collection/effects/pill.playable';
+import {EnvelopePlayable} from '@/collection/bacteria/envelope.playable';
+import {ChickenPlayable} from '@/collection/virus/chicken.playable';
+import {GooExplosionPlayable} from '@/collection/effects/goo-explosion.playable';
+import {GooSpurtPlayable} from '@/collection/effects/goo-spurt.playable';
+import {RavenPlayable} from '@/collection/effects/raven.playable';
+import {GarlicPlayable} from '@/collection/medicine/garlic.playable';
+import {WaterBottlePlayable} from '@/collection/supply/water-bottle.playable';
+import {VendingMachinePlayable} from '@/collection/supply/vending-machine.playable';
+import {HotMealPlayable} from '@/collection/supply/hot-meal.playable';
+import {CookiePlayable} from '@/collection/food/cookie.playable';
+import {ChocolatePlayable} from '@/collection/food/chocolate.playable';
+import {CakePlayable} from '@/collection/food/cake.playable';
+import {CheesePlayable} from '@/collection/food/cheese.playable';
+import {BreadPlayable} from '@/collection/food/bread.playable';
+import {MeatPlayable} from '@/collection/food/meat.playable';
+import {OrangePlayable} from '@/collection/food/orange.playable';
+import {FishPlayable} from '@/collection/food/fish.playable';
+import {BerriesPlayable} from '@/collection/food/berries.playable';
+import {WatermelonPlayable} from '@/collection/food/watermelon.playable';
+import {GlassShotPlayable} from '@/collection/food/glass-shot.playable';
+import {FruitTreePlayable} from '@/collection/supply/fruit-tree.playable';
+import {FruitBowlPlayable} from '@/collection/supply/fruit-bowl.playable';
+import {FishSmokingPlayable} from '@/collection/supply/fish-smoking.playable';
+import {CoveredJarPlayable} from '@/collection/supply/covered-jar.playable';
+import {BerryBushPlayable} from '@/collection/supply/berry-bush.playable';
+import {MedicinePillsPlayable} from '@/collection/supply/medicine-pills.playable';
+import {FirstAidKitPlayable} from '@/collection/supply/first-aid-kit.playable';
 
 export class GameService {
   private static instance: GameService;
@@ -96,6 +125,7 @@ export class GameService {
       berries: () => new BerriesPlayable(),
       watermelon: () => new WatermelonPlayable(),
       glass_shot: () => new GlassShotPlayable(),
+
       //food-supply
       berry_bush: () => new BerryBushPlayable(),
       covered_jar: () => new CoveredJarPlayable(),
@@ -105,19 +135,33 @@ export class GameService {
       hot_meal: () => new HotMealPlayable(),
       vending_machine: () => new VendingMachinePlayable(),
       water_bottle: () => new WaterBottlePlayable(),
+
       // other
       defibrilate: () => new DefibrilateEffect(),
+      raven: () => new RavenPlayable(),
+
       // bacteria
       rat: () => new RatPlayable(),
       tick: () => new TickPlayable(),
+      envelope: () => new EnvelopePlayable(),
+
       // virus
       bird: () => new BirdPlayable(),
       fangs: () => new FangsPlayable(),
+      chicken: () => new ChickenPlayable(),
+
       // parasite
       white_cat: () => new CatPlayable(),
       mosquito: () => new MosquitoPlayable(),
+
+      // sick effects
+      goo_explosion: () => new GooExplosionPlayable(),
+      goo_spurt: () => new GooSpurtPlayable(),
+
       // medicine
       pill: () => new PillPlayable(),
+      medicines: () => new AntibioticsPlayable(),
+      garlic: () => new GarlicPlayable(),
       // medicine-supply
       medicine_pills: () => new MedicinePillsPlayable(),
       first_aid_kit: () => new FirstAidKitPlayable()

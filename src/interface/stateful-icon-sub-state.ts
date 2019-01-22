@@ -38,7 +38,9 @@ export class BasicStatefulIconSubState<T extends number | string | boolean> impl
 export class NumberStatefulIconSubState extends BasicStatefulIconSubState<number> {
 
   changeValueBy(gameState: GameState, changeBy: number): void {
-    this.setValue(gameState, this.getValue() + changeBy);
+    let newValue = this.getValue() + changeBy;
+    if (newValue < 0) newValue = 0;
+    this.setValue(gameState, newValue);
   }
 }
 
