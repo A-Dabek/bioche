@@ -90,6 +90,20 @@ export const UsersStore: StoreOptions<UsersState> = {
           } else {
             if (!context.state.user) {
               context.dispatch(new UsersStoreSetEnemy(user.playing));
+              userService.updateUser({
+                name: user.name,
+                hand: Array(4)
+                  .fill(1)
+                  .map(() => GameService.getInstance().getRandomIcon()) as string[],
+                state: GameService.getInstance().startingState()
+              });
+              userService.updateUser({
+                name: user.playing,
+                hand: Array(4)
+                  .fill(1)
+                  .map(() => GameService.getInstance().getRandomIcon()) as string[],
+                state: GameService.getInstance().startingState()
+              });
               // context.dispatch(new LobbyStoreEnterAction(action.name));
             }
             else if (

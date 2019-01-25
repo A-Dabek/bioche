@@ -11,6 +11,7 @@ import {HeartOrgan} from '@/collection/organ/heart-organ';
 import {LungsOrgan} from '@/collection/organ/lungs-organ';
 import {KidneysOrgan} from '@/collection/organ/kidneys-organ';
 import {LiverOrgan} from '@/collection/organ/liver-organ';
+import {Description} from '@/core/description/description';
 
 export abstract class OrganPlayable extends StatefulIcon {
   readonly health: NumberStatefulIconSubState;
@@ -21,6 +22,14 @@ export abstract class OrganPlayable extends StatefulIcon {
       ...super.getSubStates(),
       this.health,
       this.stopped
+    ];
+  }
+
+  getDescription(): Description[] {
+    return [
+      {
+        code: 'Co powiesz na to, że {{health_normal}} starts with 10 a {{kidneys}} lubią {{bowels}} elo morda',
+      }
     ];
   }
 

@@ -27,9 +27,18 @@ export class BowelsOrgan extends OrganPlayable {
   onTurnEnd(gameState: GameState): void {
     super.onTurnEnd(gameState);
     this.antibodies.changeValueBy(gameState, 5);
-    if (this.virus.getValue() > 0) this.antibodies.changeValueBy(gameState, -this.bacteria.getValue());
-    if (this.virus.getValue() > 0) this.antibodies.changeValueBy(gameState, -this.virus.getValue());
-    if (this.parasite.getValue() > 0) this.antibodies.changeValueBy(gameState, -this.parasite.getValue());
+    if (this.bacteria.getValue() > 0) {
+      this.antibodies.changeValueBy(gameState, -this.bacteria.getValue());
+      if (this.antibodies.getValue() > 0) this.bacteria.changeValueBy(gameState, -1);
+    }
+    if (this.virus.getValue() > 0) {
+      this.antibodies.changeValueBy(gameState, -this.virus.getValue());
+      if (this.antibodies.getValue() > 0) this.virus.changeValueBy(gameState, -1);
+    }
+    if (this.parasite.getValue() > 0) {
+      this.antibodies.changeValueBy(gameState, -this.parasite.getValue());
+      if (this.antibodies.getValue() > 0) this.parasite.changeValueBy(gameState, -1);
+    }
   }
 
   constructor(state?: FirebaseStatefulIcon) {

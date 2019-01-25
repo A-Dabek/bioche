@@ -1,13 +1,16 @@
 import {GameState} from '@/interface/game-state';
 import {FirebaseStatefulIcon} from '@/interface/firebase-stateful-icon';
 import {StatefulIconSubState} from '@/interface/stateful-icon-sub-state';
+import {DescriptiveIcon} from '@/core/description/descriptive-icon';
+import {Description} from '@/core/description/description';
 
 
-export abstract class StatefulIcon {
+export abstract class StatefulIcon implements DescriptiveIcon {
   readonly name: string;
 
   abstract onTurnStart(gameState: GameState): void;
   abstract onTurnEnd(gameState: GameState): void;
+  abstract getDescription(): Description[];
 
   getSubStates(): StatefulIconSubState<any>[] {
     return [];

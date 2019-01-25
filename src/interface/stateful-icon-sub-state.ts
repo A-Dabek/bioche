@@ -1,6 +1,6 @@
 import {GameState} from '@/interface/game-state';
 
-export interface StatefulIconSubState<T> {
+export interface StatefulIconSubState<T>{
   readonly name: string;
   readonly mapper: string;
   readonly className: string;
