@@ -32,27 +32,27 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import {FirebasePalette} from "../interface/firebase-palette";
+import Vue from "vue";
+import { FirebasePalette } from "../interface/firebase-palette";
 
-  export default Vue.extend({
+export default Vue.extend({
   name: "icon",
   data: function() {
     return {};
   },
   props: {
-    name: {type: String, default: ""},
+    name: { type: String, default: "" },
     strokeColor: {
       type: String,
-      validator: function (value) {
+      validator: (value: string) => {
         return /^#[0-9a-fA-F]+$/.test(value);
       }
     },
-    text: {type: String},
-    sideSize: {type: String, default: '50px'}
+    text: { type: String },
+    sideSize: { type: String, default: "50px" }
   },
   computed: {
-    path: function() {
+    path: function(): string {
       return this.$store.getters.getIcon(this.name).path;
     },
     palette: function(): FirebasePalette {

@@ -8,7 +8,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { User } from "@/interface/user";
 import { functions } from "firebase";
 import {
   NavigationMutationGoTo,

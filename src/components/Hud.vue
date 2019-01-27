@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-6" >
+    <div class="col-6">
       <label v-if="!turn" class="spin">
         <icon v-bind:name="'hourglass'"/>
       </label>
@@ -14,17 +14,17 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import {User} from "@/interface/user";
-  import IconVue from "@/components/Icon.vue";
+import Vue from "vue";
+import IconVue from "@/components/Icon.vue";
+import { FirebaseUser } from "@/interface/firebase-user";
 
-  export default Vue.extend({
+export default Vue.extend({
   name: "hud",
   components: {
     icon: IconVue
   },
   props: {
-    user: { type: Object as () => User },
+    user: { type: Object as () => FirebaseUser },
     turn: { type: Boolean, default: false }
   }
 });
@@ -42,15 +42,15 @@
   animation-iteration-count: infinite;
 }
 @keyframes spin {
-    0% {
-      transform:rotate(0deg);
-    }
-    25% {
-      transform: rotate(180deg);
-    }
-    100% {
-      transform: rotate(180deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
 }
 </style>
 

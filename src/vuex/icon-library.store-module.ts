@@ -1,17 +1,15 @@
-import {StoreOptions} from 'vuex';
-import {FirestoreService} from '@/service/firestore.service';
-import {FirebaseIcon} from '@/interface/firebase-icon';
+import { StoreOptions } from 'vuex';
+import { FirestoreService } from '@/service/firestore.service';
+import { FirebaseIcon } from '@/interface/firebase-icon';
 
 export class IconStoreAction_ShowDescription {
   type = 'showDescription';
-  constructor(public name: string) {
-  }
+  constructor(public name: string) {}
 }
 
 export class IconStoreAction_HideDescription {
   type = 'hideDescription';
-  constructor() {
-  }
+  constructor() {}
 }
 
 interface IconLibraryState {
@@ -50,11 +48,11 @@ export const IconLibraryStore: StoreOptions<IconLibraryState> = {
         ...library
       };
     },
-    showDescription: function (state, action: IconStoreAction_ShowDescription) {
+    showDescription: function(state, action: IconStoreAction_ShowDescription) {
       state.showDescription = true;
       state.descriptionOf = action.name;
     },
-    hideDescription: function (state) {
+    hideDescription: function(state) {
       state.showDescription = false;
     }
   },

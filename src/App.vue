@@ -18,16 +18,16 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import {AppStoreObject} from "./vuex/store";
-  import LoginVue from "@/components/Login.vue";
-  import GameVue from "@/components/Game.vue";
-  import {IconLibraryInitAction} from "@/vuex/icon-library.store-module";
-  import AftermathVue from "@/components/Aftermath.vue";
-  import {PaletteLibraryInitAction} from "@/vuex/palette-library.store-module";
-  import InterfaceVue from "@/components/Interface.vue";
+import Vue from "vue";
+import { AppStoreObject } from "./vuex/store";
+import LoginVue from "@/components/Login.vue";
+import GameVue from "@/components/Game.vue";
+import { IconLibraryInitAction } from "@/vuex/icon-library.store-module";
+import AftermathVue from "@/components/Aftermath.vue";
+import { PaletteLibraryInitAction } from "@/vuex/palette-library.store-module";
+import InterfaceVue from "@/components/Interface.vue";
 
-  export default Vue.extend({
+export default Vue.extend({
   name: "app-app",
   components: {
     login: LoginVue,
@@ -44,11 +44,15 @@
     styleObject: function(): Object {
       const user = this.$store.state.users.user;
       if (!user) return {};
-      const palette = this.$store.getters.getPalette(this.$store.state.users.user.palette);
-      if (palette) return {
-        color: palette.primary,
-        background: palette.secondary
-      };
+      const palette = this.$store.getters.getPalette(
+        this.$store.state.users.user.palette
+      );
+      if (palette)
+        return {
+          color: palette.primary,
+          background: palette.secondary
+        };
+      return {};
     },
     showLoggingScreen: function() {
       return this.$store.getters.logging;

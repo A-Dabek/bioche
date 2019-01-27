@@ -1,9 +1,10 @@
-import {StoreOptions} from 'vuex';
-import {FirestoreService} from '@/service/firestore.service';
-import {GameService} from '@/service/game-service';
-import {NavigationEnum, NavigationMutationGoTo} from './navigation.store';
-import {FirestoreUserService} from '@/service/firestore-user.service';
-import {FirebaseUser} from '@/interface/firebase-user';
+import { StoreOptions } from 'vuex';
+import { FirestoreService } from '@/service/firestore.service';
+import { GameService } from '@/service/game-service';
+import { NavigationEnum, NavigationMutationGoTo } from './navigation.store';
+import { FirestoreUserService } from '@/service/firestore-user.service';
+import { FirebaseUser } from '@/interface/firebase-user';
+import { LobbyStoreEnterAction } from './lobby.store-module';
 
 const userService = new FirestoreUserService(
   FirestoreService.getInstance().getDB()
@@ -89,24 +90,27 @@ export const UsersStore: StoreOptions<UsersState> = {
             userService.setUser({ name: action.name, challenging: '' });
           } else {
             if (!context.state.user) {
-              context.dispatch(new UsersStoreSetEnemy(user.playing));
-              userService.updateUser({
-                name: user.name,
-                hand: Array(4)
-                  .fill(1)
-                  .map(() => GameService.getInstance().getRandomIcon()) as string[],
-                state: GameService.getInstance().startingState()
-              });
-              userService.updateUser({
-                name: user.playing,
-                hand: Array(4)
-                  .fill(1)
-                  .map(() => GameService.getInstance().getRandomIcon()) as string[],
-                state: GameService.getInstance().startingState()
-              });
-              // context.dispatch(new LobbyStoreEnterAction(action.name));
-            }
-            else if (
+              // context.dispatch(new UsersStoreSetEnemy(user.playing));
+              // userService.updateUser({
+              //   name: user.name,
+              //   hand: Array(20)
+              //     .fill(1)
+              //     .map(() =>
+              //       GameService.getInstance().getRandomIcon()
+              //     ) as string[],
+              //   state: GameService.getInstance().startingState()
+              // });
+              // userService.updateUser({
+              //   name: user.playing,
+              //   hand: Array(4)
+              //     .fill(1)
+              //     .map(() =>
+              //       GameService.getInstance().getRandomIcon()
+              //     ) as string[],
+              //   state: GameService.getInstance().startingState()
+              // });
+              context.dispatch(new LobbyStoreEnterAction(action.name));
+            } else if (
               context.state.user &&
               !context.state.user.winner &&
               !!user.winner
@@ -115,7 +119,7 @@ export const UsersStore: StoreOptions<UsersState> = {
               context.state._enemyHook();
               context.commit('setEnemy', null);
             }
-            context.commit('setUser', {...user, turn: true});
+            context.commit('setUser', { ...user, turn: true });
           }
         }
       );
@@ -147,7 +151,7 @@ export const UsersStore: StoreOptions<UsersState> = {
         turn: false,
         winner: '',
         lastPlay: '',
-        hand: Array(4)
+        hand: Array(20)
           .fill(1)
           .map(() => GameService.getInstance().getRandomIcon()) as string[],
         state: GameService.getInstance().startingState()

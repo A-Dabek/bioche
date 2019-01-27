@@ -15,15 +15,18 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import HandVue from "@/components/Hand.vue";
-  import StateVue from "@/components/State.vue";
-  import {UsersStorePlayAction, UsersStoreStartGameAction} from "@/vuex/users.store-module";
-  import {User} from "@/interface/user";
-  import IconVue from "@/components/Icon.vue";
-  import HudVue from "@/components/Hud.vue";
+import Vue from "vue";
+import HandVue from "@/components/Hand.vue";
+import StateVue from "@/components/State.vue";
+import {
+  UsersStorePlayAction,
+  UsersStoreStartGameAction
+} from "@/vuex/users.store-module";
+import IconVue from "@/components/Icon.vue";
+import HudVue from "@/components/Hud.vue";
+import { FirebaseUser } from "@/interface/firebase-user";
 
-  export default Vue.extend({
+export default Vue.extend({
   name: "game",
   components: {
     hand: HandVue,
@@ -35,10 +38,10 @@
     myTurn: function(): boolean {
       return this.$store.getters.myTurn;
     },
-    enemy: function(): User {
+    enemy: function(): FirebaseUser {
       return this.$store.state.users.enemy;
     },
-    user: function(): User {
+    user: function(): FirebaseUser {
       return this.$store.state.users.user;
     }
   },
@@ -59,6 +62,6 @@
 
 <style lang="scss" scoped>
 .game-root {
-    min-height: 95vh;
+  min-height: 95vh;
 }
 </style>
